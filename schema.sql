@@ -1,0 +1,23 @@
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS jobs;
+
+CREATE TABLE jobs (
+    l_id INTEGER PRIMARY KEY,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    company TEXT NOT NULL,
+    title TEXT NOT NULL,
+    location TEXT NOT NULL,
+    level TEXT NOT NULL,
+    url TEXT NOT NULL,
+    description TEXT NOT NULL,
+    yoe TEXT NOT NULL,
+    arrangement TEXT NOT NULL
+);

@@ -12,7 +12,7 @@ Years of experience (categorized as 0-1, 2-4, 4+)
 Work arrangement (categorized as On-site, Hybrid, Remote - default is on-site)
 Experience level (caterogized as Intern, Entry Level, Junior, Mid-level, senior)
 
-Please output only the result in JSON format without any extra newline characters (for example: result = {YoE:"2-4", arrangement:"Remote", experience:"Junior"} without any leading or trailing comments
+Please output only the result in JSON format without any extra newline characters (for example: result = {yoe:"2-4", arrangement:"Remote", experience:"Junior"} without any leading or trailing comments
 
 '''
 genai.configure(api_key=apiKey)

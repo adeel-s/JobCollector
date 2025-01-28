@@ -1,19 +1,17 @@
-from flask import Flask, redirect, url_for, request
+from flask import Flask, render_template
+import sqlite3
 
 app = Flask(__name__)
 
-@app.route('/initialize/<text>')
-def initialize(text):
-    return 'Initialized: %s' % text
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if request.method == 'POST':
-        user = request.form['nm']
-        return redirect(url_for('initialize', text=user))
-    else:
-        user = request.args.get('nm')
-        return redirect(url_for('initialize', text=user))
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    jobs = conn.execute('SELECT * FROM jobs').fetchall()
+    conn.close()
+    return render_template("index.html", jobs=jobs)
 
