@@ -25,8 +25,8 @@ print("Extracting description information")
 # print(ds.extractData(data[0][6]))
 # print(df)
 newColumns = []
-for desc in df["description"]:
-    extractedData = json.loads(ds.extractData(desc))
+for index, row in df.iterrows():
+    extractedData = json.loads(ds.extractData(row["title"] + " " + row["description"]))
     # print(extractedData)
     newColumns.append(extractedData)
 newDf = pd.DataFrame(newColumns)
@@ -63,9 +63,16 @@ print("Connected to the database")
 table_name = "jobs"
 try:
     print("Writing to the database")
-    df.to_sql(table_name, connection, if_exists="append", index=False)
-except:
-    print("Error while writing to database")
+    for _, row in df.iterrows():
+        connection.execute("""
+            INSERT OR IGNORE INTO jobs (l_id, company, title, location, level, url, description, yoe, arrangement)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (row.l_id, row.company, row.title, row.location, row.level, row.url, row.description, row.yoe, row.arrangement))
+
+    connection.commit()
+
+except Exception as e:
+    print("Error while writing to database:", e)
 finally:
     connection.close()
 print("Updated database, closed connection")
