@@ -10,7 +10,7 @@ CREATE TABLE posts (
 DROP TABLE IF EXISTS jobs;
 
 CREATE TABLE jobs (
-    l_id INTEGER PRIMARY KEY,
+    l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     company TEXT NOT NULL,
     title TEXT NOT NULL,
@@ -19,5 +19,14 @@ CREATE TABLE jobs (
     url TEXT NOT NULL,
     description TEXT NOT NULL,
     yoe TEXT NOT NULL,
-    arrangement TEXT NOT NULL
+    arrangement TEXT NOT NULL,
+    applied BOOLEAN DEFAULT false,
+    rejected BOOLEAN DEFAULT false,
+    saved BOOLEAN DEFAULT false,
+    not_interested BOOLEAN DEFAULT false
 );
+
+CREATE TABLE retrieved_jobs (
+    l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
+    processed BOOLEAN DEFAULT false
+)
