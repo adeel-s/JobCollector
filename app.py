@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import sqlite3
+from db import db_service as db
 
 app = Flask(__name__)
 
@@ -11,7 +12,7 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    jobs = conn.execute('SELECT * FROM jobs').fetchall()
+    jobs = db.getJobs()
     conn.close()
     return render_template("index.html", jobs=jobs)
 

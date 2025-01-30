@@ -11,8 +11,7 @@ outputFile = "debugging_csv\\processed_jobs.csv"
 
 #open csv file, read in all data
 print("Scraping jobs")
-scraper.runScrapingService(5)
-data = []
+scraper.runScrapingService(15)
 print("Reading scraped jobs")
 try:
     df = pd.read_csv(inputFile)

@@ -19,9 +19,9 @@ CREATE TABLE jobs (
     not_interested BOOLEAN DEFAULT false
 );
 
-DROP TABLE IF EXISTS retrieved_jobs;
+DROP TABLE IF EXISTS job_ids;
 
-CREATE TABLE retrieved_jobs (
-    l_id INTEGER PRIMARY KEY,
+CREATE TABLE job_ids (
+    l_id BIGINT PRIMARY KEY,
     processed BOOLEAN DEFAULT false
 )

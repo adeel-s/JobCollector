@@ -35,7 +35,6 @@ def scrape(numJobs):
             if jobID:
                 jobID = jobID.get('data-entity-urn').split(":")[3]
                 ids.append(jobID)
-            #print(jobID)
     print("Finished collecting job IDs, collected: %s" % str(len(ids)))
     outputData(ids, tempFile)
     limitReqs = min(numJobs, len(ids))
