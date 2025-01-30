@@ -1,16 +1,17 @@
 from io import StringIO
 import pandas as pd
 import json
-import data_extraction_service as ds
-import linkedin_scraper as scraper
+import services.data_extraction_service as ds
+import services.linkedin_scraper as scraper
 import sqlite3
+from db import db_service as db
 
 inputFile = "debugging_csv\\scraped_jobs.csv"
 outputFile = "debugging_csv\\processed_jobs.csv"
 
 #open csv file, read in all data
 print("Scraping jobs")
-scraper.runScrapingService(15)
+scraper.runScrapingService(5)
 data = []
 print("Reading scraped jobs")
 try:
@@ -26,8 +27,8 @@ print("Extracting description information")
 # print(df)
 newColumns = []
 for index, row in df.iterrows():
-    extractedData = json.loads(ds.extractData(row["title"] + " " + row["description"]))
-    # print(extractedData)
+    extractDataInput = row["title"] + " " + row["description"]
+    extractedData = json.loads(ds.extractData(extractDataInput))
     newColumns.append(extractedData)
 newDf = pd.DataFrame(newColumns)
 
@@ -58,24 +59,27 @@ print("Done writing")
 
 # Write to database
 print("Connecting to the database")
-connection = sqlite3.connect('database.db')
-print("Connected to the database")
-table_name = "jobs"
-try:
-    print("Writing to the database")
-    for _, row in df.iterrows():
-        connection.execute("""
-            INSERT OR IGNORE INTO jobs (l_id, company, title, location, level, url, description, yoe, arrangement)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (row.l_id, row.company, row.title, row.location, row.level, row.url, row.description, row.yoe, row.arrangement))
 
-    connection.commit()
+db.writeDFSupabase(df, "jobs")
+db.writeDFSqlite(df, "jobs")
+# connection = sqlite3.connect('db\\database.db')
+# print("Connected to the database")
+# table_name = "jobs"
+# try:
+#     print("Writing to the database")
+#     for _, row in df.iterrows():
+#         connection.execute("""
+#             INSERT OR IGNORE INTO jobs (l_id, company, title, location, level, url, description, yoe, arrangement)
+#             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+#         """, (row.l_id, row.company, row.title, row.location, row.level, row.url, row.description, row.yoe, row.arrangement))
 
-except Exception as e:
-    print("Error while writing to database:", e)
-finally:
-    connection.close()
-print("Updated database, closed connection")
+#     connection.commit()
+
+# except Exception as e:
+#     print("Error while writing to database:", e)
+# finally:
+#     connection.close()
+# print("Updated database, closed connection")
 
 
 print("Done")

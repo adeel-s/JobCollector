@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import math
 import pandas as pd
+import services.timestamp_service as ts
 
 ids = []
 output_file = "debugging_csv\\scraped_jobs.csv"
@@ -15,16 +16,17 @@ def outputData (jobList, file):
     df.to_csv(file, index=False, encoding='utf-8')
 
 def scrape(numJobs):
-    target_url='https://www.linkedin.com/jobs/search/?alertAction=viewjobs&currentJobId=4133952919&geoId=90000014&keywords=Software%20Engineer&origin=JOB_SEARCH_PAGE_SEARCH_BUTTON&refresh=true'
+    target_url='https://www.linkedin.com/jobs/search/?currentJobId=4138259127&distance=25&f_TPR=r86400&geoId=90000014&keywords=Software%20Engineer&origin=JOB_SEARCH_PAGE_JOB_FILTER&refresh=true&sortBy=R'
     k = []
     o = {}
+
     print("Opening search URL and collecting job IDs")
     res = requests.get(target_url.format(0))
     soup=BeautifulSoup(res.text,'html.parser')
     totalJobs = soup.find("span", {"class":"results-context-header__job-count"}).text
     totalJobs = int(''.join(c for c in totalJobs if c.isdigit()))
     print(totalJobs)
-    for i in range(magicNumber): #change this later
+    for i in range(5): #change this later
         res = requests.get(target_url.format(i))
         soup=BeautifulSoup(res.text,'html.parser')
         jobs=soup.find_all("li")
@@ -41,6 +43,7 @@ def scrape(numJobs):
     for j in range(limitReqs):
         resp = requests.get(target_url.format(ids[j]))
         soup=BeautifulSoup(resp.text,'html.parser')
+        postingDate = " This job was posted "
         # Get company name
         o["l_id"]=ids[j]
         try:
@@ -62,6 +65,12 @@ def scrape(numJobs):
             o["level"]=soup.find("ul",{"class":"description__job-criteria-list"}).find("li").text.replace("Seniority level","").strip()
         except:
             o["level"]=None
+        # posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata
+        try:
+            postedText = soup.find("span",{"class":"posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata"}).text.strip()
+            o["posted"]=ts.getTimestamp(postedText)
+        except:
+            o["posted"]=None
         try:
             o["url"]=soup.find("a",{"class":"topcard__link"}).get("href")
         except:

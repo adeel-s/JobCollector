@@ -1,17 +1,9 @@
-DROP TABLE IF EXISTS posts;
-
-CREATE TABLE posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL,
-    content TEXT NOT NULL
-);
-
 DROP TABLE IF EXISTS jobs;
 
 CREATE TABLE jobs (
     l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    posted TIMESTAMP DEFAULT NULL,
     company TEXT NOT NULL,
     title TEXT NOT NULL,
     location TEXT NOT NULL,
@@ -20,13 +12,16 @@ CREATE TABLE jobs (
     description TEXT NOT NULL,
     yoe TEXT NOT NULL,
     arrangement TEXT NOT NULL,
+    pay TEXT NOT NULL DEFAULT 'Pay not stated',
     applied BOOLEAN DEFAULT false,
     rejected BOOLEAN DEFAULT false,
     saved BOOLEAN DEFAULT false,
     not_interested BOOLEAN DEFAULT false
 );
 
+DROP TABLE IF EXISTS retrieved_jobs;
+
 CREATE TABLE retrieved_jobs (
-    l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
+    l_id INTEGER PRIMARY KEY,
     processed BOOLEAN DEFAULT false
 )

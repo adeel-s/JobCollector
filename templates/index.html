@@ -3,7 +3,7 @@
 {% block content %}
     <h1>{% block title %} Your results {% endblock %}</h1>
     {% for job in jobs %}
-        <a href={{ job['url']}}>
+        <a href={{ job['url']}} target="_blank" rel="noopener noreferrer">
             <h2>{{ job['title'] }}</h2>
         </a>
         <h3>{{ job['company'] }}</h3>
@@ -12,6 +12,7 @@
             <span class="badge badge-primary">{{ job['arrangement'] }}</span>
             <span class="badge badge-primary">YoE: {{ job['yoe'] }}</span>
             <span class="badge badge-primary">{{ job['level'] }}</span>
+            <span class="badge badge-primary">{{ job['posted'] }}</span>
         </span>
         <div style="display: flex; gap: 10px; align-items: center;">
             <form action="">
