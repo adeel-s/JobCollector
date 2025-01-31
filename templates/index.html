@@ -13,19 +13,53 @@
             <span class="badge badge-primary">YoE: {{ job['yoe'] }}</span>
             <span class="badge badge-primary">{{ job['level'] }}</span>
             <span class="badge badge-primary">{{ job['posted'] }}</span>
+            <span class="badge badge-primary">{{ job['pay'] }}</span>
         </span>
         <div style="display: flex; gap: 10px; align-items: center;">
-            <form action="">
-                <!--See if name and value attributes are needed in the input elements-->
-                <input type="checkbox" id="applied" name="applied" style="display: inline-block;">
-                <label for="applied">Applied</label>
-                <input type="checkbox" id="save" name="save" style="display: inline-block;">
-                <label for="save">Save</label>
-                <input type="checkbox" id="not-interested" name="not-interested" style="display: inline-block;">
-                <label for="not-interested">Not interested</label><b>
-              </form>
+            {% for status in ["applied", "rejected", "saved", "not_interested"] %}
+                <input type="checkbox" class="status-checkbox" 
+                       data-job-id="{{ job['l_id'] }}" 
+                       data-status="{{ status }}" 
+                       {% if job[status] %}checked{% endif %}>
+                <label>{{ status.capitalize() }}</label>
+            {% endfor %}
         </div>
+        
         <hr>
         <hr>
     {% endfor %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("DOM fully loaded and parsed");
+            
+            document.querySelectorAll(".status-checkbox").forEach(checkbox => {
+                console.log("Attaching event listener to:", checkbox);
+                
+                checkbox.addEventListener("change", function() {
+                    let jobId = this.getAttribute("data-job-id");
+                    let status = this.getAttribute("data-status");
+                    let checked = this.checked;
+    
+                    console.log(`Checkbox changed: jobId=${jobId}, status=${status}, checked=${checked}`);
+    
+                    fetch("/update_status", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ job_id: jobId, status: status, checked: checked })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.success) {
+                            console.error("Error updating status:", data.error);
+                        } else {
+                            console.log("Status updated successfully:", data);
+                        }
+                    })
+                    .catch(error => console.error("Request failed:", error));
+                });
+            });
+        });
+    </script>
+    
 {% endblock %}
+

@@ -37,3 +37,4 @@ jp.processJobs(idBatch, LIRequestLimit, LIRequestDelay, gemeniRequestLimit)
 
 # Back up Supabase tables
 db.backupSupabase()
+print("Job collection complete")

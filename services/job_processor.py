@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import random
 import time
@@ -55,7 +56,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
             postedText = soup.find("span",{"class":"posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata"}).text.strip()
             job["posted"]=ts.getTimestamp(postedText)
         except:
-            job["posted"]=None
+            job["posted"]=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         try:
             job["url"]=soup.find("a",{"class":"topcard__link"}).get("href")
         except:
