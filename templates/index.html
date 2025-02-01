@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>{% block title %} Your results {% endblock %}</h1>
+    <div id="jobsContainer">
     {% for job in jobs %}
         <a href={{ job['url']}} target="_blank" rel="noopener noreferrer">
             <h2>{{ job['title'] }}</h2>
@@ -26,8 +27,8 @@
         </div>
         
         <hr>
-        <hr>
     {% endfor %}
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             console.log("DOM fully loaded and parsed");

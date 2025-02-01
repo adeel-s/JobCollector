@@ -35,3 +35,4 @@
 # connection.close()
 
 print("THIS WILL CLEAR ALL TABLES IN ALL DATABASES!")
+print("Update this to be parametric, take in table names as input...")

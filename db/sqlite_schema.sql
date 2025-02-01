@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS jobs;
+-- DROP TABLE IF EXISTS jobs_backup;
 
-CREATE TABLE jobs (
+CREATE TABLE jobs_backup (
     l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     posted TIMESTAMP DEFAULT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE jobs (
     level TEXT NOT NULL,
     url TEXT NOT NULL,
     description TEXT NOT NULL,
-    yoe TEXT NOT NULL,
+    yoe INTEGER NOT NULL,
     arrangement TEXT NOT NULL,
     pay TEXT NOT NULL DEFAULT 'Pay not stated',
     applied BOOLEAN DEFAULT false,
@@ -19,9 +19,9 @@ CREATE TABLE jobs (
     not_interested BOOLEAN DEFAULT false
 );
 
-DROP TABLE IF EXISTS job_ids;
+-- DROP TABLE IF EXISTS job_ids_backup;
 
-CREATE TABLE job_ids (
+CREATE TABLE job_ids_backup (
     l_id INTEGER PRIMARY KEY ON CONFLICT IGNORE,
     processed BOOLEAN DEFAULT false
 )

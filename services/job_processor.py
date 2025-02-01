@@ -40,7 +40,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         try:
             job["title"]=soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
         except:
-            job["title"]=None
+            job["title"]="No job title provided - "
 
         try:
             job["location"]=soup.find("span",{"class":"topcard__flavor topcard__flavor--bullet"}).text.strip()
@@ -65,7 +65,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
             description = soup.find("div",{"class":"show-more-less-html__markup"}).contents
             job["description"]=str(description)
         except:
-            job["description"]=None
+            job["description"]="No job description provided - "
         jobs.append(job)
         
     print("Finished collecting job details")
@@ -81,8 +81,10 @@ def processJobDescriptions(jobs, gemeniRequestLimit):
             print("Sleeping for %s seconds" %geminiDelay)
             time.sleep(geminiDelay)
         extractDataInput = row["title"] + " " + row["description"]
-        extractedData = json.loads(ds.extractData(extractDataInput))
-        newColumns.append(extractedData)
+        extractedData = ds.extractData(extractDataInput)
+        if extractedData:
+            extractedData = json.loads(extractedData)
+            newColumns.append(extractedData)
     newDf = pd.DataFrame(newColumns)
 
     for col in newDf.columns:
@@ -97,11 +99,13 @@ def processJobDescriptions(jobs, gemeniRequestLimit):
         # Consolidate into YoE
         if not row["yoe"]:
             if row["level"] == "Entry Level":
-                jobs.at[index, "yoe"] = "0-1"
+                jobs.at[index, "yoe"] = "0"
             elif row["level"] == "Junior":
-                jobs.at[index, "yoe"] = "2-4"
+                jobs.at[index, "yoe"] = "2"
             else:
-                jobs.at[index, "yoe"] = "4+"
+                jobs.at[index, "yoe"] = "3"
+        else:
+            jobs.at[index, "yoe"] = row["yoe"][0]
 
     jobs = jobs.drop(columns="experience")
     for column in jobs.columns:

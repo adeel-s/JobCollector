@@ -1,12 +1,10 @@
-import sqlite3, pandas as pd, os, sys, json
+import sqlite3, pandas as pd, os, sys, json, psycopg2
 from supabase import create_client, Client
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-dbJobs = []
-
 import app_secrets as sec
-# Make this into a class at some point
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from psycopg2 import pool, extras
+from psycopg2.sql import SQL, Identifier
+
 sqliteSchemaFile = 'db\\sqlite_schema.sql'
 supabaseSchemaFile = 'db\\supabase_schema.sql'
 localDatabase = 'db\\database.db'
@@ -39,28 +37,6 @@ def writeDFSqlite(df, table):
     finally:
         connection.close()
 
-def getAllJobs():
-    print("Connecting to Supabase...")
-    try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
-        print("Connected")
-        response = supabase.table(jobsTable).select("*").execute()
-    except Exception as e:
-        print("Supabase access failure: ", e)
-    return response.data
-
-def getNewJobs():
-    print("Connecting to Supabase...")
-    try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
-        print("Connected")
-        # COULD ADD SAVED TO THIS↓
-        response = supabase.table(jobsTable).select("*").\
-            eq("applied", False).eq("rejected", False).eq("not_interested", False).execute()
-    except Exception as e:
-        print("Supabase access failure: ", e)
-    return response.data
-
 def getAllIDs():
     print("Connecting to Supabase...")
     try:
@@ -73,7 +49,7 @@ def getAllIDs():
 
 def backupSupabase():
     print("Backing up Supabase to Sqlite")
-    jobsDF = pd.DataFrame(getAllJobs())
+    jobsDF = pd.DataFrame(selectFromJobs())
     idsDF = pd.DataFrame(getAllIDs())
     writeDFSqlite(jobsDF, jobsTable)
     writeDFSqlite(idsDF, idsTable)
@@ -116,24 +92,18 @@ def updateJobStatus(id, status, checked):
     except Exception as e:
         print("Supabase status update failure: ", e)
 
-from supabase import create_client, Client
-import os
-import app_secrets as sec  # Ensure you have your Supabase credentials stored securely
-
-# Initialize Supabase Client
-supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
-
-def selectFromTable(filters=None):
+def selectFromJobsOld(jobFilter=None):
     try:
         print("Connecting to Supabase...")
         supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
         print("Connected")
-        print(f"Select on: {filter}")
+        
+        print(f"Select on: {jobFilter}")
         query = supabase.table(jobsTable).select("*")
 
         # Apply filters dynamically
-        if filters:
-            for column, value in filters.items():
+        if jobFilter:
+            for column, value in jobFilter.items():
                 query = query.eq(column, value)
 
         response = query.execute()
@@ -142,5 +112,102 @@ def selectFromTable(filters=None):
     except Exception as e:
         print("Supabase selection error:", e)
         return None
+    
+def selectFromJobs(jobFilter=None):
+    try:
+        print("Connecting to Supabase...")
+        connection_pool = pool.SimpleConnectionPool(
+            maxconn=10,
+            minconn=1,
+            user="postgres.wcqruutxfjomblzltiyo",
+            password=sec.SUPABASE_PASSWORD,
+            host="aws-0-us-east-2.pooler.supabase.com",
+            port=6543,
+            dbname="postgres",
+        )
+
+        conn = connection_pool.getconn()  # Get a connection from the pool
+        cursor = conn.cursor(cursor_factory=extras.DictCursor)
+        
+        print(f"Select on: {jobFilter}")
+        query, values = generateQuery(jobFilter)
+        print(query, values)
+        cursor.execute(query, values)
+        rows = cursor.fetchall()
+        #print(rows)
+        jobs = [dict(row) for row in rows]
+
+        connection_pool.putconn(conn)  # Return connection to the pool        print("Connected")
+        return jobs  # Returns list of records
+
+    except Exception as e:
+        print("Supabase selection error:", e)
+        return None
+    
+
+def generateQuery(filters):
+    """
+    Generates a dynamic SQL query based on the given filters.
+    :param filters: Dictionary of filter conditions
+    :return: SQL query string and parameter values
+    """
+    baseQuery = SQL("SELECT * FROM jobs WHERE 1=1")
+    if not filters:
+        return baseQuery, ()
+    try:
+        conditions = []
+        values = []
+        statuses = {"applied": False, "rejected": False, "saved": False, "not_interested": False}
+        status_conditions = []
+        if "status" in filters:
+            for status in filters["status"]:
+                statuses[status] = True
+        for status, value in statuses.items():
+            status_conditions.append(SQL("{} = %s").format(Identifier(status)))
+            values.append(value)
+
+        if status_conditions:
+            conditions.append(SQL(" AND ").join(status_conditions))
+
+        if "pay" in filters:
+            conditions.append(SQL("{} != %s").format(Identifier("pay")))
+            values.append("Pay not stated")
+
+        location_conditions = []
+        if "location" in filters and filters["location"]:
+            
+            for location in filters["location"]:
+                location_conditions.append(SQL("{} ILIKE %s").format(Identifier("location")))
+                values.append(f"%{location}%")  # Using f-string for clarity
+    
+        # Combine all conditions using OR
+        if location_conditions:
+            conditions.append(SQL(" OR ").join(location_conditions))
+
+        # Handle location, arrangement, and pay filters (IN clauses)
+        for key in ["arrangement"]:
+            if key in filters and filters[key]:
+                conditions.append(SQL("{} IN %s").format(Identifier(key)))
+                values.append(tuple(filters[key]))
+
+        # if "yoe" in filters:
+        #     yoe = filters["yoe"][-1]
+        #     conditions.append(SQL("{} <= %s").format(Identifier("yoe")))
+        #     values.append(yoe)
 
 
+        # Handle "posted" filter (Sorting by most recent)
+        order_by = SQL("")
+        if "posted" in filters and "Most recent" in filters["posted"]:
+            order_by = SQL("ORDER BY posted DESC NULLS LAST")
+
+        # Combine all conditions into the query
+        if conditions:
+            baseQuery = baseQuery + SQL(" AND ") + SQL(" AND ").join(conditions)
+
+        # Final query with sorting
+        final_query = baseQuery + order_by
+        return final_query, values
+    except Exception as e:
+        print(f"Query generation failed with exception: {e}")
+    return

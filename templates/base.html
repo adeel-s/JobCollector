@@ -14,18 +14,91 @@
 
     <title>{% block title %} {% endblock %}</title>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
+  <body style="padding-top: 60px;">
+    <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="{{ url_for('index')}}">hired.cs</ai></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon">@#$%^&</span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item active">
+              <li class="nav-item active">
                 <a class="nav-link" href="#">About</a>
             </li>
-            </ul>
+            <!-- Status Filter -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="statusDropdown" role="button" data-toggle="dropdown">
+                  Status
+              </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item filter-option" data-filter="status" data-value="applied">Applied</a>
+                  <a class="dropdown-item filter-option" data-filter="status" data-value="rejected">Rejected</a>
+                  <a class="dropdown-item filter-option" data-filter="status" data-value="saved">Saved</a>
+                  <a class="dropdown-item filter-option" data-filter="status" data-value="not_interested">Not interested</a>
+              </div>
+          </li>
+             <!-- Location Filter -->
+             <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="locationDropdown" role="button" data-toggle="dropdown">
+                  Location
+              </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item filter-option" data-filter="location" data-value="IL">IL</a>
+                  <a class="dropdown-item filter-option" data-filter="location" data-value="CA">CA</a>
+                  <a class="dropdown-item filter-option" data-filter="location" data-value="WI">WI</a>
+                  <a class="dropdown-item filter-option" data-filter="location" data-value="Other">Other</a>
+              </div>
+          </li>
+
+          <!-- Arrangement Filter -->
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="arrangementDropdown" role="button" data-toggle="dropdown">
+                  Arrangement
+              </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item filter-option" data-filter="arrangement" data-value="Remote">Remote</a>
+                  <a class="dropdown-item filter-option" data-filter="arrangement" data-value="Hybrid">Hybrid</a>
+                  <a class="dropdown-item filter-option" data-filter="arrangement" data-value="On-site">On-site</a>
+              </div>
+          </li>
+
+          <!-- YoE Filter -->
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="yoeDropdown" role="button" data-toggle="dropdown">
+                  YoE
+              </a>
+              <div class="dropdown-menu">
+                  <a class="dropdown-item filter-option" data-filter="yoe" data-value="0">0+ years</a>
+                  <a class="dropdown-item filter-option" data-filter="yoe" data-value="1">1+ years</a>
+                  <a class="dropdown-item filter-option" data-filter="yoe" data-value="2">2+ years</a>
+                  <a class="dropdown-item filter-option" data-filter="yoe" data-value="3">3+ years</a>
+                  <a class="dropdown-item filter-option" data-filter="yoe" data-value="4">4+ years</a>
+              </div>
+          </li>
+        <!-- Pay Filter -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="payDropdown" role="button" data-toggle="dropdown">
+              Pay
+          </a>
+          <div class="dropdown-menu">
+              <a class="dropdown-item filter-option" data-filter="pay" data-value="Stated">Stated</a>
+          </div>
+      </li>
+      <!-- Created Filter -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="postedDropdown" role="button" data-toggle="dropdown">
+            Posted
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item filter-option" data-filter="posted" data-value="Most recent">Most recent</a>
+            <a class="dropdown-item filter-option" data-filter="posted" data-value="All">All</a>
+        </div>
+    </li>
+      </ul>
+
+      <!-- Filters Buttons -->
+      <button id="applyFilters" class="btn btn-primary ml-auto">Apply Filters</button>
+      <button id="resetFilters" class="btn btn-primary ml-auto">Reset Filters</button>
         </div>
     </nav>
     <div class="container">
@@ -34,8 +107,124 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   </body>
 </html>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let selectedFilters = {
+        status: [],
+        location: [],
+        arrangement: [],
+        yoe: [],
+        pay: [],
+        posted: []
+    };
+
+    // Helper function to update the button text
+    function updateDropdownButton(filterType) {
+        const dropdownButton = document.getElementById(filterType + "Dropdown");
+        const selectedValues = selectedFilters[filterType];
+        if (dropdownButton) {
+            if (selectedValues.length > 0) {
+                dropdownButton.textContent = filterType.charAt(0).toUpperCase() + filterType.slice(1) + " " + selectedValues.join("  ");
+            } else {
+                dropdownButton.textContent = filterType.charAt(0).toUpperCase() + filterType.slice(1);
+            }
+        }
+    }
+
+    document.querySelectorAll(".filter-option").forEach(item => {
+        item.addEventListener("click", function (event) {
+            event.preventDefault();
+            let selectedValue = this.getAttribute("data-value");
+            let filterType = this.getAttribute("data-filter"); // Get the type of filter (e.g., status, location, etc.)
+
+            // Toggle the selection of the filter value
+            if (!selectedFilters[filterType].includes(selectedValue)) {
+                // Add the selected value to the corresponding filter type
+                selectedFilters[filterType].push(selectedValue);
+                // Disable the option to prevent it from being selected again
+            } else {
+                // Remove the value from the selected filters
+                selectedFilters[filterType] = selectedFilters[filterType].filter(value => value !== selectedValue);
+                // Re-enable the option to allow it to be selected again
+            }
+
+            // Update the dropdown button text
+            updateDropdownButton(filterType);
+        });
+    });
+
+    // Apply filters when the button is clicked
+    document.getElementById("applyFilters").addEventListener("click", function () {
+    fetch("/filter_jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(selectedFilters)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("In applyFilters event response function")
+        if (data.success) {
+            updateJobListings(data.jobs);  // Update job listings dynamically
+        } else {
+            console.error("Error fetching filtered jobs:", data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+
+// Function to update job listings dynamically
+function updateJobListings(jobs) {
+    let jobsContainer = document.getElementById("jobsContainer"); // Ensure this ID exists in your HTML
+    jobsContainer.innerHTML = "";  // Clear existing jobs
+
+    if (jobs.length === 0) {
+        jobsContainer.innerHTML = "<p>No jobs found.</p>";
+        return;
+    }
+
+    jobs.forEach(job => {
+        let jobElement = document.createElement("div");
+        jobElement.classList.add("job-item");
+        jobElement.innerHTML = `
+            <a href=${job.url} target="_blank" rel="noopener noreferrer">
+            <h2>${job.title}</h2>
+        </a>
+        <h3>${job.company}</h3>
+        <span>
+            <span class="badge badge-primary">${job.location}</span>
+            <span class="badge badge-primary">${job.arrangement}</span>
+            <span class="badge badge-primary">YoE: ${job.yoe}</span>
+            <span class="badge badge-primary">${job.level}</span>
+            <span class="badge badge-primary">${job.posted}</span>
+            <span class="badge badge-primary">${job.pay}</span>
+        </span>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            ${generateCheckboxes(job)}
+        </div>
+        
+        <hr>`;
+        jobsContainer.appendChild(jobElement);
+    });
+}
+
+  
+});
+function generateCheckboxes(job) {
+    const statuses = ["Applied", "Rejected", "Saved", "Not interested"];
+    return statuses.map(status => `
+        <input type="checkbox" class="status-checkbox" 
+               data-job-id="${job.l_id}" 
+               data-status="${status}" 
+               ${job[status] ? "checked" : ""}>
+        <label>${status.charAt(0).toUpperCase() + status.slice(1)}</label>
+    `).join("");
+}
+
+</script>
+
+

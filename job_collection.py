@@ -1,9 +1,8 @@
 from services import job_id_collector as idc, job_processor as jp
 
 from db import db_service as db
-searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&distance=25&f_E=1%2C2&f_TPR=r86400&geoId=90000014&keywords=Software%20Engineer&origin=JOB_SEARCH_PAGE_JOB_FILTER&refresh=true&sortBy=R']
-
-#'https://www.linkedin.com/jobs/search/?currentJobId=4137537653&f_E=1%2C2&f_TPR=r86400&f_WT=2&keywords=developer&origin=JOB_SEARCH_PAGE_LOCATION_SUGGESTION&refresh=true''https://www.linkedin.com/jobs/search/?currentJobId=4137537653&f_E=1%2C2&f_TPR=r86400&f_WT=2&keywords=developer&origin=JOB_SEARCH_PAGE_LOCATION_SUGGESTION&refresh=true'
+searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&distance=25&f_E=1%2C2&f_TPR=r86400&geoId=90000014&keywords=Software%20Engineer&origin=JOB_SEARCH_PAGE_JOB_FILTER&refresh=true&sortBy=R',
+              'https://www.linkedin.com/jobs/search/?currentJobId=4137537653&f_E=1%2C2&f_TPR=r86400&f_WT=2&keywords=developer&origin=JOB_SEARCH_PAGE_LOCATION_SUGGESTION&refresh=true''https://www.linkedin.com/jobs/search/?currentJobId=4137537653&f_E=1%2C2&f_TPR=r86400&f_WT=2&keywords=developer&origin=JOB_SEARCH_PAGE_LOCATION_SUGGESTION&refresh=true']
 
 #
 # I DO want to parameterize request loading from this file
@@ -17,7 +16,7 @@ searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&dis
 LIRequestDelay = 120
 gemeniRequestLimit = 14
 LIRequestLimit = 15
-IDBatchSize = 14
+IDBatchSize = 75
 
 for url in searchURLs:
     idc.collectJobIDs(url, LIRequestLimit, LIRequestDelay)

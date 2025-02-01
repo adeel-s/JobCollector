@@ -6,13 +6,12 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    filter = \
-    {"applied": False, "rejected": False, "saved": False, "not_interested": False}
-    jobs = db.selectFromTable(filter)
+    jobFilter = [{"status":[]}]
+    jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs)
 
 @app.route("/update_status", methods=["POST"])
-def update_status():
+def updateStatus():
     try:
         data = request.json
         job_id = data["job_id"]
@@ -26,4 +25,25 @@ def update_status():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+    
+@app.route("/filter_jobs", methods=["POST"])
+def filterJobs():
+    try:
+        data = request.json
 
+        jobFilter = {}  # Use a different variable name since "filter" is a built-in function in Python
+
+        try:
+            for column, value in data.items():  # FIX: Use .items() to get key-value pairs
+                if value:
+                    jobFilter[column] = value  # Store the filter conditions
+            print("Filter conditions:", jobFilter)  # Debugging
+            jobs = db.selectFromJobs(jobFilter)
+        
+            return jsonify({"success": True, "jobs": jobs})
+        except Exception as e:
+            print("Error processing filters:", e)
+        
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

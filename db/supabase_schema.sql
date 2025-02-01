@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS jobs;
+DROP TABLE IF EXISTS jobs_backup;
 
-CREATE TABLE jobs (
+CREATE TABLE jobs_backup (
     l_id BIGINT PRIMARY KEY,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     posted TIMESTAMP DEFAULT NULL,
@@ -19,9 +19,9 @@ CREATE TABLE jobs (
     not_interested BOOLEAN DEFAULT false
 );
 
-DROP TABLE IF EXISTS job_ids;
+DROP TABLE IF EXISTS job_ids_backup;
 
-CREATE TABLE job_ids (
+CREATE TABLE job_ids_backup (
     l_id BIGINT PRIMARY KEY,
     processed BOOLEAN DEFAULT false
 )
