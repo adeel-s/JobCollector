@@ -39,7 +39,6 @@ def filterJobs():
                     jobFilter[column] = value  # Store the filter conditions
             print("Filter conditions:", jobFilter)  # Debugging
             jobs = db.selectFromJobs(jobFilter)
-        
             return jsonify({"success": True, "jobs": jobs})
         except Exception as e:
             print("Error processing filters:", e)

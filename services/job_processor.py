@@ -10,7 +10,7 @@ import services.data_extraction_service as ds
 from db import db_service as db
 
 
-delayWidth = 90
+delayWidth = 60
 debuggingCSV = "debugging_csv\\new_processed_jobs.csv"
 debuggingCSV1 = "debugging_csv\\new_scraped_jobs.csv"
 jobsTableName = "jobs"
@@ -23,8 +23,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         # Delay on reaching the request limit
         # TODO: Fix request limit after debugging implementation
         if i % LIRequestLimit == LIRequestLimit - 1:
-            #nap = random.randint(LIRequestDelay - int(delayWidth/2), LIRequestDelay + int(delayWidth/2))
-            nap = random.randint(15, 45)
+            nap = random.randint(LIRequestDelay - int(delayWidth/2), LIRequestDelay + int(delayWidth/2))
             print("Sleeping for %s seconds" %nap)
             time.sleep(nap)
         resp = requests.get(target_url.format(idBatch[i]))

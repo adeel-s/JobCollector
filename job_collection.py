@@ -13,8 +13,8 @@ searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&dis
     # Written to the database after every batch
     # One batch every 2-5 minutes 
 
-LIRequestDelay = 120
-gemeniRequestLimit = 14
+LIRequestDelay = 60
+gemeniRequestLimit = 5
 LIRequestLimit = 15
 IDBatchSize = 75
 

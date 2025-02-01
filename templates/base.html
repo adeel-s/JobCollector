@@ -210,12 +210,13 @@ function updateJobListings(jobs) {
         <hr>`;
         jobsContainer.appendChild(jobElement);
     });
+    attachCheckboxListeners();
 }
 
   
 });
 function generateCheckboxes(job) {
-    const statuses = ["Applied", "Rejected", "Saved", "Not interested"];
+    const statuses = ["applied", "rejected", "saved", "not_interested"];
     return statuses.map(status => `
         <input type="checkbox" class="status-checkbox" 
                data-job-id="${job.l_id}" 
@@ -225,6 +226,32 @@ function generateCheckboxes(job) {
     `).join("");
 }
 
+function attachCheckboxListeners() {
+    document.querySelectorAll(".status-checkbox").forEach(checkbox => {
+        checkbox.addEventListener("change", function() {
+            let jobId = this.getAttribute("data-job-id");
+            let status = this.getAttribute("data-status");
+            let checked = this.checked;
+
+            console.log(`Checkbox changed: jobId=${jobId}, status=${status}, checked=${checked}`);
+
+            fetch("/update_status", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ job_id: jobId, status: status, checked: checked })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    console.error("Error updating status:", data.error);
+                } else {
+                    console.log("Status updated successfully:", data);
+                }
+            })
+            .catch(error => console.error("Request failed:", error));
+        });
+    });
+}
 </script>
 
 
