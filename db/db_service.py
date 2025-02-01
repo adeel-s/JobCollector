@@ -1,9 +1,9 @@
 import sqlite3, pandas as pd, os, sys, json, psycopg2
 from supabase import create_client, Client
-import app_secrets as sec
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from psycopg2 import pool, extras
 from psycopg2.sql import SQL, Identifier
+import app_secrets as sec
 
 sqliteSchemaFile = 'db\\sqlite_schema.sql'
 supabaseSchemaFile = 'db\\supabase_schema.sql'
@@ -18,7 +18,7 @@ def writeDFSupabase(df, table):
         print("Connected")
         data = df.to_dict(orient="records")
         print("Writing to table %s ..." %table)
-        response = supabase.table(table).upsert(data, on_conflict=["l_id"], ignore_duplicates=True).execute()
+        supabase.table(table).upsert(data, on_conflict=["l_id"], ignore_duplicates=True).execute()
     except Exception as e:
         print("Supabase access failure: ", e)
     
@@ -91,27 +91,6 @@ def updateJobStatus(id, status, checked):
         response = (supabase.table(jobsTable).update({status: checked}).eq("l_id", id).execute())
     except Exception as e:
         print("Supabase status update failure: ", e)
-
-def selectFromJobsOld(jobFilter=None):
-    try:
-        print("Connecting to Supabase...")
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
-        print("Connected")
-        
-        print(f"Select on: {jobFilter}")
-        query = supabase.table(jobsTable).select("*")
-
-        # Apply filters dynamically
-        if jobFilter:
-            for column, value in jobFilter.items():
-                query = query.eq(column, value)
-
-        response = query.execute()
-        return response.data  # Returns list of records
-
-    except Exception as e:
-        print("Supabase selection error:", e)
-        return None
     
 def selectFromJobs(jobFilter=None):
     try:
@@ -190,10 +169,10 @@ def generateQuery(filters):
                 conditions.append(SQL("{} IN %s").format(Identifier(key)))
                 values.append(tuple(filters[key]))
 
-        # if "yoe" in filters:
-        #     yoe = filters["yoe"][-1]
-        #     conditions.append(SQL("{} <= %s").format(Identifier("yoe")))
-        #     values.append(yoe)
+        if "yoe" in filters:
+            yoe = filters["yoe"][-1] # Take the highest yoe value
+            conditions.append(SQL("{} <= %s").format(Identifier("yoe")))
+            values.append(yoe)
 
 
         # Handle "posted" filter (Sorting by most recent)
