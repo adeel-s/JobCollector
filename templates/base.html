@@ -97,6 +97,7 @@
       </ul>
 
       <!-- Filters Buttons -->
+      <span id="job-count" class="badge badge-light"></span>
       <button id="applyFilters" class="btn btn-primary ml-auto">Apply Filters</button>
       <button id="resetFilters" class="btn btn-primary ml-auto">Reset Filters</button>
         </div>
@@ -114,6 +115,8 @@
 </html>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
+    let jobsLength = JSON.parse('{{ jobs_length | tojson }}');
+    document.getElementById("job-count").textContent = jobsLength + " results";
     let selectedFilters = {
         status: [],
         location: [],
@@ -169,7 +172,8 @@
     .then(data => {
         console.log("In applyFilters event response function")
         if (data.success) {
-            updateJobListings(data.jobs);  // Update job listings dynamically
+            updateJobListings(data.jobs); // Update job listings dynamically
+            // document.getElementById("job-count").innerHTML = data.jobs.length + " results"
         } else {
             console.error("Error fetching filtered jobs:", data.error);
         }
@@ -177,10 +181,17 @@
     .catch(error => console.error("Error:", error));
 });
 
+    // Apply filters when the button is clicked
+    document.getElementById("resetFilters").addEventListener("click", function () {
+    location.reload()
+});
+
 // Function to update job listings dynamically
 function updateJobListings(jobs) {
     let jobsContainer = document.getElementById("jobsContainer"); // Ensure this ID exists in your HTML
     jobsContainer.innerHTML = "";  // Clear existing jobs
+
+    document.getElementById("job-count").textContent = jobs.length + " results";
 
     if (jobs.length === 0) {
         jobsContainer.innerHTML = "<p>No jobs found.</p>";

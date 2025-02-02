@@ -81,9 +81,11 @@ def processJobDescriptions(jobs, gemeniRequestLimit):
             time.sleep(geminiDelay)
         extractDataInput = row["title"] + " " + row["description"]
         extractedData = ds.extractData(extractDataInput)
+        print(extractedData)
         if extractedData:
             extractedData = json.loads(extractedData)
             newColumns.append(extractedData)
+    print("Finished data extraction")
     newDf = pd.DataFrame(newColumns)
 
     for col in newDf.columns:

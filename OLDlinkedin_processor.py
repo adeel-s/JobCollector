@@ -2,7 +2,7 @@ from io import StringIO
 import pandas as pd
 import json
 import services.data_extraction_service as ds
-import services.linkedin_scraper as scraper
+import services.OLDlinkedin_scraper as scraper
 import sqlite3
 from db import db_service as db
 

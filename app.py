@@ -8,7 +8,7 @@ app = Flask(__name__)
 def index():
     jobFilter = [{"status":[]}]
     jobs = db.selectFromJobs(jobFilter)
-    return render_template("index.html", jobs=jobs)
+    return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
 
 @app.route("/update_status", methods=["POST"])
 def updateStatus():

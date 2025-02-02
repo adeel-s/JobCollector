@@ -76,6 +76,19 @@ def updateJobIDs(jobs):
     except Exception as e:
         print("Supabase update failure: ", e)
 
+def resetJobIDs():
+    print("Connecting to Supabase...")
+    try:
+        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        print("Connected")
+        
+        print("Marking job ids as processed")
+        ids = getAllIDs()
+        for i in ids:
+            response = (supabase.table(idsTable).update({"processed": False}).eq("l_id", i["l_id"]).execute())
+    except Exception as e:
+        print("Supabase update failure: ", e)
+
 def updateJobStatus(id, status, checked):
     print("Connecting to Supabase...")
     try:
@@ -190,3 +203,26 @@ def generateQuery(filters):
     except Exception as e:
         print(f"Query generation failed with exception: {e}")
     return
+
+def dbReporting():
+    jobsDF = pd.DataFrame(selectFromJobs())
+    idsDF = pd.DataFrame(getAllIDs())
+    numJobRecords = len(jobsDF)
+    numIDRecords = len(idsDF)
+    numProcessedJobsReported = 0
+
+    for index, row in idsDF.iterrows():
+        if row["processed"]:
+            numProcessedJobsReported += 1
+
+    print(f"""
+        ---------------------------------------------
+          
+                     DATABASE REPORTING            
+        > Number of jobs in jobs table:        {numJobRecords}
+        > Number of IDs in ids table:          {numIDRecords}
+        > Number of IDs reported as processed: {numProcessedJobsReported}
+        
+                        END OF REPORT
+        ---------------------------------------------
+        """)

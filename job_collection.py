@@ -16,10 +16,12 @@ searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&dis
 LIRequestDelay = 60
 gemeniRequestLimit = 5
 LIRequestLimit = 15
-IDBatchSize = 75
+IDBatchSize = 5
 
-for url in searchURLs:
-    idc.collectJobIDs(url, LIRequestLimit, LIRequestDelay)
+db.dbReporting()
+# Collect new job IDs from LinkedIn
+# for url in searchURLs:
+#     idc.collectJobIDs(url, LIRequestLimit, LIRequestDelay)
 
 
 # Get a batch of unprocessed job IDs from the database
@@ -30,10 +32,16 @@ idBatch = [list(d.values())[0] for d in db.getIDs(IDBatchSize)]
     # This method will also handle NLP data extraction
         # Eventually, paralellize this
     # Jobs are written to the database after every batch
-jp.processJobs(idBatch, LIRequestLimit, LIRequestDelay, gemeniRequestLimit)
-# idBatch = db.getIDs(IDBatchSize) # ENABLE WITH WHILE LOOP
 
+### When while loop is uncommented:
+    # remove conditional, while loop handles it
+if idBatch:
+    jp.processJobs(idBatch, LIRequestLimit, LIRequestDelay, gemeniRequestLimit)
+    db.backupSupabase()
+    print("Job collection complete")
+else:
+    print("No jobs left to process")
+# idBatch = db.getIDs(IDBatchSize) # ENABLE WITH WHILE LOOP
+db.dbReporting()
 
 # Back up Supabase tables
-db.backupSupabase()
-print("Job collection complete")
