@@ -19,8 +19,10 @@ def writeDFSupabase(df, table):
         data = df.to_dict(orient="records")
         print("Writing to table %s ..." %table)
         supabase.table(table).upsert(data, on_conflict=["l_id"], ignore_duplicates=True).execute()
+        return True
     except Exception as e:
         print("Supabase access failure: ", e)
+        return False
     
 
 def writeDFSqlite(df, table):
@@ -73,8 +75,10 @@ def updateJobIDs(jobs):
         print("Marking job ids as processed")
         for i, row in jobs.iterrows():
             response = (supabase.table(idsTable).update({"processed": True}).eq("l_id", row["l_id"]).execute())
+        return True
     except Exception as e:
         print("Supabase update failure: ", e)
+        return False
 
 def resetJobIDs():
     print("Connecting to Supabase...")
@@ -218,7 +222,8 @@ def dbReporting():
     print(f"""
         ---------------------------------------------
           
-                     DATABASE REPORTING            
+                     DATABASE REPORTING 
+                     
         > Number of jobs in jobs table:        {numJobRecords}
         > Number of IDs in ids table:          {numIDRecords}
         > Number of IDs reported as processed: {numProcessedJobsReported}

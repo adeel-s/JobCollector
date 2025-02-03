@@ -22,7 +22,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
     for i in range(len(idBatch)):
         # Delay on reaching the request limit
         # TODO: Fix request limit after debugging implementation
-        if i % LIRequestLimit == LIRequestLimit - 1:
+        if i % LIRequestLimit == 0 and i != 0:
             nap = random.randint(LIRequestDelay - int(delayWidth/2), LIRequestDelay + int(delayWidth/2))
             print("Sleeping for %s seconds" %nap)
             time.sleep(nap)
@@ -34,7 +34,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         try:
             job["company"]=soup.find("div",{"class":"top-card-layout__card"}).find("a").find("img").get('alt')
         except:
-            job["company"]=None
+            job["company"]="No company provided"
         # Get position title
         try:
             job["title"]=soup.find("div",{"class":"top-card-layout__entity-info"}).find("a").text.strip()
@@ -44,12 +44,12 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         try:
             job["location"]=soup.find("span",{"class":"topcard__flavor topcard__flavor--bullet"}).text.strip()
         except:
-            job["location"]=None
+            job["location"]="No location provided"
         # Get seniority level
         try:
             job["level"]=soup.find("ul",{"class":"description__job-criteria-list"}).find("li").text.replace("Seniority level","").strip()
         except:
-            job["level"]=None
+            job["level"]="No level provided"
         # posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata
         try:
             postedText = soup.find("span",{"class":"posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata"}).text.strip()
@@ -59,7 +59,7 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         try:
             job["url"]=soup.find("a",{"class":"topcard__link"}).get("href")
         except:
-            job["url"]=None
+            continue
         try:
             description = soup.find("div",{"class":"show-more-less-html__markup"}).contents
             job["description"]=str(description)
@@ -74,56 +74,53 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
     return jobs
 
 def processJobDescriptions(jobs, gemeniRequestLimit):
-    newColumns = []
-    for i, row in jobs.iterrows():
-        if i % gemeniRequestLimit == gemeniRequestLimit - 1:
-            print("Sleeping for %s seconds" %geminiDelay)
-            time.sleep(geminiDelay)
-        extractDataInput = row["title"] + " " + row["description"]
-        extractedData = ds.extractData(extractDataInput)
-        print(extractedData)
-        if extractedData:
-            extractedData = json.loads(extractedData)
-            newColumns.append(extractedData)
-    print("Finished data extraction")
-    newDf = pd.DataFrame(newColumns)
+    if not jobs.empty:
+        newColumns = []
+        for i, row in jobs.iterrows():
+            if i % gemeniRequestLimit == 0 and i != 0:
+                print("Sleeping for %s seconds" %geminiDelay)
+                time.sleep(geminiDelay)
+            extractDataInput = row["title"] + " " + row["description"]
+            extractedData = ds.extractData(extractDataInput)
+            print(extractedData)
+            if extractedData:
+                extractedData = json.loads(extractedData)
+                newColumns.append(extractedData)
+        print("Finished data extraction")
+        newDf = pd.DataFrame(newColumns)
+        for col in newDf.columns:
+            jobs[col] = newDf[col]
 
-    for col in newDf.columns:
-        jobs[col] = newDf[col]
+        # Mediate experience level and YoE
 
-    # Mediate experience level and YoE
-
-    for index, row in jobs.iterrows():
-        # Merge experience
-        if row["level"] == "Not Applicable":
-            jobs.at[index, "level"] = row["experience"]
-        # Consolidate into YoE
-        if not row["yoe"]:
-            if row["level"] == "Entry Level":
-                jobs.at[index, "yoe"] = "0"
-            elif row["level"] == "Junior":
-                jobs.at[index, "yoe"] = "2"
+        for index, row in jobs.iterrows():
+            # Merge experience
+            if row["level"] == "Not Applicable":
+                jobs.at[index, "level"] = row["experience"]
+            # Consolidate into YoE
+            if not row["yoe"]:
+                if row["level"] == "Entry Level":
+                    jobs.at[index, "yoe"] = "0"
+                elif row["level"] == "Junior":
+                    jobs.at[index, "yoe"] = "2"
+                else:
+                    jobs.at[index, "yoe"] = "3"
             else:
-                jobs.at[index, "yoe"] = "3"
-        else:
-            jobs.at[index, "yoe"] = row["yoe"][0]
+                jobs.at[index, "yoe"] = row["yoe"][0]
 
-    jobs = jobs.drop(columns="experience")
-    for column in jobs.columns:
-        for index, value in enumerate(jobs[column]):
-            try:
-                json.dumps(value)  # Attempt to serialize
-            except TypeError:
-                print(f"Non-serializable value found in column '{column}' at index {index}: {value} ({type(value)})")
-    db.writeDFSupabase(jobs, jobsTableName)
-    db.updateJobIDs(jobs)
-    jobs.to_csv(debuggingCSV, index=False, encoding='utf-8')
+        jobs = jobs.drop(columns="experience")
+        for column in jobs.columns:
+            for index, value in enumerate(jobs[column]):
+                try:
+                    json.dumps(value)  # Attempt to serialize
+                except TypeError:
+                    print(f"Non-serializable value found in column '{column}' at index {index}: {value} ({type(value)})")
+        if db.writeDFSupabase(jobs, jobsTableName):
+            db.updateJobIDs(jobs)
+        jobs.to_csv(debuggingCSV, index=False, encoding='utf-8')
     return jobs
 
 def processJobs(idBatch, LIRequestLimit, LIRequestDelay, gemeniRequestLimit):
     jobs = getJobDetails(idBatch, LIRequestLimit, LIRequestDelay)
     jobs = processJobDescriptions(jobs, gemeniRequestLimit)
     
-
-
-    #TODO: STILL NEED TO RATE LIMIT GEMINI REQUESTS

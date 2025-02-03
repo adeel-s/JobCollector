@@ -14,9 +14,9 @@ searchURLs = ['https://www.linkedin.com/jobs/search/?currentJobId=4138895842&dis
     # One batch every 2-5 minutes 
 
 LIRequestDelay = 60
-gemeniRequestLimit = 5
+gemeniRequestLimit = 14
 LIRequestLimit = 15
-IDBatchSize = 5
+IDBatchSize = 27
 
 db.dbReporting()
 # Collect new job IDs from LinkedIn
@@ -27,20 +27,13 @@ db.dbReporting()
 # Get a batch of unprocessed job IDs from the database
 idBatch = [list(d.values())[0] for d in db.getIDs(IDBatchSize)]
 #TODO: ENABLE WHILE LOOP
-# while(idBatch):
-    # Send all unprocessed jobs to job collector
-    # This method will also handle NLP data extraction
-        # Eventually, paralellize this
-    # Jobs are written to the database after every batch
-
-### When while loop is uncommented:
-    # remove conditional, while loop handles it
-if idBatch:
+while(idBatch):
     jp.processJobs(idBatch, LIRequestLimit, LIRequestDelay, gemeniRequestLimit)
     db.backupSupabase()
-    print("Job collection complete")
-else:
-    print("No jobs left to process")
+    print("Job batch complete")
+    idBatch = [list(d.values())[0] for d in db.getIDs(IDBatchSize)]
+
+print("No jobs left to process")
 # idBatch = db.getIDs(IDBatchSize) # ENABLE WITH WHILE LOOP
 db.dbReporting()
 

@@ -25,7 +25,7 @@ def collectJobIDs (url, LIRequestLimit, LIRequestDelay):
     print(str(totalJobs) + " found at URL: " + url)
 
     for i in range(math.ceil(totalJobs / pageSize)): # replace with totalJobs
-        if i % LIRequestLimit == LIRequestLimit - 1:
+        if i % LIRequestLimit == 0 and i != 0:
             nap = random.randint(LIRequestDelay - int(delayWidth/2), LIRequestDelay + int(delayWidth/2))
             print("Sleeping for %s seconds" %nap)
             time.sleep(nap)
