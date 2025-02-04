@@ -1,3 +1,5 @@
 app_secrets.py
 __pycache__/
 supabase_db_test.py
+application_materials/
+llm_prompts.py

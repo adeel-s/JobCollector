@@ -20,8 +20,8 @@ IDBatchSize = 27
 
 db.dbReporting()
 # Collect new job IDs from LinkedIn
-# for url in searchURLs:
-#     idc.collectJobIDs(url, LIRequestLimit, LIRequestDelay)
+for url in searchURLs:
+    idc.collectJobIDs(url, LIRequestLimit, LIRequestDelay)
 
 
 # Get a batch of unprocessed job IDs from the database
