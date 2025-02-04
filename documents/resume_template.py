@@ -17,12 +17,12 @@ www.linkedin.com/in/sultanadeel | www.github.com/adeel-s
 !@#$Placeholder
 
 **Software Engineering Intern @ Oshkosh Corporation**
-*Oshkosh, WI | January 2023 – May 2024*
+*Oshkosh, WI | January 2023 - May 2024*
 
 !@#$Placeholder
 
 **Lead Developer @ University of Wisconsin - Oshkosh**
-*Oshkosh, WI | Septempber 2023 – December 2023*
+*Oshkosh, WI | September 2023 - December 2023*
 
 !@#$Placeholder
 
@@ -32,12 +32,12 @@ www.linkedin.com/in/sultanadeel | www.github.com/adeel-s
 
 * **Programming Languages**: Python, Java, Javascript, HTML/CSS, C#, C++, SQL
 * **Frameworks**: Node.js, Flask, .NET Maui, Flutter
-* **Tools**: Git/Hub, VS Code, Visual Studio, Docker, Android Studio
+* **Tools**: Git/Hub, VS Code, Visual Studio, Docker, Android Studio, Pandas
 
 ***
 
 ## Education
 
 **Bachelor of Science in Computer Science with Honors**
-*University of Wisconsin - Oshkosh | 2020 – 2024 | GPA: 3.75 | Dean's List | Undergraduate Research Grant Recipient*
+*University of Wisconsin - Oshkosh | 2020 - 2024 | GPA: 3.75 | Dean's List | Undergraduate Research Grant Recipient*
 '''

@@ -15,7 +15,7 @@ delayWidth = 90
 def outputCSV (jobList, file):
     print("Writing data to csv")
     df = pd.DataFrame(jobList)
-    df.to_csv(file, index=False, header=False, encoding='utf-8', mode='a')
+    df.to_csv(file, index=False, header=False, encoding='utf-8')
 
 def collectJobIDs (url, LIRequestLimit, LIRequestDelay):
     res = requests.get(url.format(0))

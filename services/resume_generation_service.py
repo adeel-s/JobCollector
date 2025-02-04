@@ -1,35 +1,31 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from documents import resume_template as template
-from documents import description as desc
-import resume_experience_generation_service as expGen
+import re
+import google.generativeai as genai
+import app_secrets as sec
+import llm_prompts as prompts
+from documents import experience as exp
 
-# Generate bullets
-description = desc.description
-print("Sending experience and description to Gemini for generation...")
-bullets = expGen.generate(description)
-print("Done with bullet point generation")
-resume = template.resume
-filePath = "documents\\resume.md"
+apiKey = sec.GEMINI_API_KEY
+experience = exp.experience
 
 
-print("Inserting bullet points into resume...")
+description = ""
+promptStart = prompts.resumeGenerationPrompt
+genai.configure(api_key=apiKey)
+model = genai.GenerativeModel("gemini-1.5-flash")
+response = ""
 
-# Fill placeholders with bullets
-i = 0
-while "!@#$Placeholder" in resume and i < len(bullets):
-    resume = resume.replace("!@#$Placeholder", bullets[i])
-    i += 1
+def generate (description):
+    prompt = f"{promptStart} \n\n Here is my work experience: \n\n {experience} \n\n Here is the job description: \n\n {description}"
+    response = model.generate_content(prompt).text.strip()
+    # print("Gemini response: ", response)
+    return parse(response)
 
-print("Done with bullet point insertion")
+def parse (bulletsString):
+    bulletsList = re.split(r'Experience \d+\n', bulletsString)[1:]  # Remove first empty split part
+    bulletsList = [bp.strip() for bp in bulletsList]
+    # print("BulletsList: ", bulletsList)
+    return bulletsList
+    
 
-print("Writing to output file...")
-
-# Write resume to output file
-with open(filePath, "w") as file:
-    file.write(resume)
-
-print("Done writing to output file")
 
 
