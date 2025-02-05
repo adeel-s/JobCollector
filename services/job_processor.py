@@ -53,18 +53,24 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         # posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata
         try:
             postedText = soup.find("span",{"class":"posted-time-ago__text posted-time-ago__text--new topcard__flavor--metadata"}).text.strip()
-            job["posted"]=ts.getTimestamp(postedText)
+            posted = ts.getTimestamp(postedText)
+            # print(idBatch[i], posted)
+            job["posted"]=posted
         except:
-            job["posted"]=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            # print("POSTED DATE NOT FOUND")
+            posted = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+            job["posted"]=posted
         try:
             job["url"]=soup.find("a",{"class":"topcard__link"}).get("href")
         except:
             continue
         try:
-            description = soup.find("div",{"class":"show-more-less-html__markup"}).contents
-            job["description"]=str(description)
+            description = soup.find("div",{"class":"show-more-less-html__markup"}).get_text()
+            # print(description)
+            job["description"]=description
         except:
             job["description"]="No job description provided - "
+            print(description)
         jobs.append(job)
         
     print("Finished collecting job details")

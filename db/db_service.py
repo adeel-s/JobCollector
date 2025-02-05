@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from psycopg2 import pool, extras
 from psycopg2.sql import SQL, Identifier
 import app_secrets as sec
+from services import timestamp_service as ts
 
 sqliteSchemaFile = 'db\\sqlite_schema.sql'
 supabaseSchemaFile = 'db\\supabase_schema.sql'
@@ -134,6 +135,12 @@ def selectFromJobs(jobFilter=None):
         jobs = [dict(row) for row in rows]
 
         connection_pool.putconn(conn)  # Return connection to the pool        print("Connected")
+        try:
+            for job in jobs:
+                relativeTimestamp = ts.getReleative(job["posted"])
+                job["posted"] = relativeTimestamp
+        except Exception as e:
+            print(f"Timestamp conversion error: {e}")
         return jobs  # Returns list of records
 
     except Exception as e:
@@ -195,7 +202,7 @@ def generateQuery(filters):
         # Handle "posted" filter (Sorting by most recent)
         order_by = SQL("")
         if "posted" in filters and "Most recent" in filters["posted"]:
-            order_by = SQL("ORDER BY posted DESC NULLS LAST")
+            order_by = SQL(" ORDER BY posted DESC NULLS LAST")
 
         # Combine all conditions into the query
         if conditions:

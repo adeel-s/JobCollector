@@ -5,9 +5,12 @@
     <div id="jobsContainer">
     {% for job in jobs %}
         <a href={{ job['url']}} target="_blank" rel="noopener noreferrer">
-            <h2>{{ job['title'] }}</h2>
+                <h2>{{ job['title'] }}</h2>
         </a>
-        <h3>{{ job['company'] }}</h3>
+        <div style="display: flex; align-items: center;">
+            <h3>{{ job['company'] }}</h3>
+            <button class="btn btn-primary ml-auto createMaterials" data-description="{{ job['description'] }}">Create Resume</button>
+        </div>
         <span>
             <span class="badge badge-primary">{{ job['location'] }}</span>
             <span class="badge badge-primary">{{ job['arrangement'] }}</span>
@@ -15,6 +18,7 @@
             <span class="badge badge-primary">{{ job['level'] }}</span>
             <span class="badge badge-primary">{{ job['posted'] }}</span>
             <span class="badge badge-primary">{{ job['pay'] }}</span>
+            <span class="badge badge-primary"></span>
         </span>
         <div style="display: flex; gap: 10px; align-items: center;">
             {% for status in ["applied", "rejected", "saved", "not_interested"] %}
@@ -32,6 +36,19 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             console.log("DOM fully loaded and parsed");
+
+            const createButtons = document.querySelectorAll(".createMaterials");
+            createButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    let jobDescription = this.getAttribute("data-description");
+                    console.log(jobDescription);
+                    fetch("/generate_materials", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ jobDescription: jobDescription})
+                    }).catch(error => console.error("Request failed:", error));
+                });
+            });
             
             document.querySelectorAll(".status-checkbox").forEach(checkbox => {
                 console.log("Attaching event listener to:", checkbox);

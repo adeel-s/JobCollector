@@ -1,14 +1,27 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 from db import db_service as db
+from services import material_generation_service as matGen
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    jobFilter = [{"status":[]}]
+    jobFilter = [{"status":[], "posted": ["Most recent"]}]
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
+
+@app.route("/generate_materials", methods=["POST"])
+def generateMaterials():
+    try:
+        data = request.json
+        jobDescription = data["jobDescription"]
+        matGen.generate(jobDescription)
+        # TODO: Return materials somehow
+        return jsonify({"success": True, "jobDescription": jobDescription})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
 
 @app.route("/update_status", methods=["POST"])
 def updateStatus():

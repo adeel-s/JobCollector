@@ -8,7 +8,7 @@ def getTimestamp(text):
     now = datetime.now()
     
     # Extract the numeric value and time unit using regex
-    match = re.search(r"(\d+)\s*(hour|day|week|month|year)s?\s*ago", text, re.IGNORECASE)
+    match = re.search(r"(\d+)\s*(second|minute|hour|day|week|month|year)s?\s*ago", text, re.IGNORECASE)
     
     if not match:
         return None  # Return None if the text format is not recognized
@@ -17,7 +17,11 @@ def getTimestamp(text):
     unit = match.group(2).lower()  # Extract the time unit (e.g., day, week)
     
     # Adjust the current time based on the extracted values
-    if unit == "hour":
+    if unit == "second":
+        job_date = now
+    elif unit == "minute":
+        job_date = now
+    elif unit == "hour":
         job_date = now
     elif unit == "day":
         job_date = now - timedelta(days=num)
@@ -36,8 +40,7 @@ def getTimestamp(text):
 def getReleative(timestamp):
     """Convert an SQL timestamp to a human-readable 'time ago' format."""
     now = datetime.now()
-    job_date = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
-    delta = now - job_date
+    delta = now - timestamp
 
     # Convert to human-friendly format
     if delta < timedelta(seconds=60):
