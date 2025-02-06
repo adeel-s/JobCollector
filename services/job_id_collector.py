@@ -20,8 +20,12 @@ def outputCSV (jobList, file):
 def collectJobIDs (url, LIRequestLimit, LIRequestDelay):
     res = requests.get(url.format(0))
     soup=BeautifulSoup(res.text,'html.parser')
-    totalJobs = soup.find("span", {"class":"results-context-header__job-count"}).text
-    totalJobs = int(''.join(c for c in totalJobs if c.isdigit()))
+    try:
+        totalJobs = soup.find("span", {"class":"results-context-header__job-count"}).text
+        totalJobs = int(''.join(c for c in totalJobs if c.isdigit()))
+    except:
+        print("Failed to locate job count on page. Taking the first 25")
+        totalJobs = 25
     print(str(totalJobs) + " found at URL: " + url)
 
     for i in range(math.ceil(totalJobs / pageSize)): # replace with totalJobs

@@ -200,9 +200,10 @@ def generateQuery(filters):
 
 
         # Handle "posted" filter (Sorting by most recent)
-        order_by = SQL("")
-        if "posted" in filters and "Most recent" in filters["posted"]:
-            order_by = SQL(" ORDER BY posted DESC NULLS LAST")
+        # order_by = SQL("")
+        # if "posted" in filters and "Most recent" in filters["posted"]:
+            
+        order_by = SQL(" ORDER BY posted DESC NULLS LAST")
 
         # Combine all conditions into the query
         if conditions:
