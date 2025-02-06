@@ -13,28 +13,28 @@ www.linkedin.com/in/sultanadeel | www.github.com/adeel-s
 **Fullstack Developer @ hired.ai**
 *Chicago, IL | December 2024 - Present*
 
-* Developed a Flask-based job posting board for entry-level developers, processing job data from multiple APIs (Indeed, Glassdoor, ZipRecruiter) and filtering by experience level (using Google Gemini API), resulting in a 80% reduction in time spent applying to jobs and a 100% reduction in applications to unqualified positions.
-* Implemented a robust data pipeline using exponential backoff to handle unreliable API requests (Google Gemini), ensuring consistent data ingestion despite variable API availability and traffic.
-* Created a system for generating tailored resumes and cover letters using Google Gemini API, leveraging user work experience and job descriptions to highlight relevant skills and accomplishments in each application. This improved application quality, potentially increasing the success rate of each application.
-* Enhanced user experience with a fully functional search and filter system (location, work arrangement, recency), allowing users to efficiently find and manage jobs that meet their criteria. 
-* Stack: Python, Flask, PostgreSQL, HTML, CSS, JavaScript, Jinja, Google Gemini API, Third-party Job Board APIs
+* Developed a Flask-based job posting board for entry-level developers, filtering jobs by experience, location, and arrangement, increasing applicant efficiency by 80% and eliminating applications to unsuitable roles entirely (100% reduction).
+* Integrated Google Gemini API to automatically classify job postings by experience level and remote eligibility, improving job matching accuracy and reducing wasted application time for users.
+* Created a dynamic resume and cover letter generation tool using Gemini, tailoring applications to specific job requirements and showcasing relevant skills, resulting in higher application success rates.
+* Implemented a robust data collection pipeline utilizing exponential backoff to handle unreliable API responses, ensuring data consistency and availability despite API limitations.
+* Stack: Python, Flask, PostgreSQL, HTML, CSS, JavaScript, Jinja, Google Gemini API, Third-party Job API
 
 **Software Engineering Intern @ Oshkosh Corporation**
 *Oshkosh, WI | January 2023 - May 2024*
 
-* Developed a multi-LiDAR fusion pipeline using ROS 2 and Autoware Universe, increasing obstacle detection by over 40% and adding rear-view obstacle classification, significantly improving vehicle safety and mapping capabilities for an autonomous vehicle prototype.
-* Implemented efficient point cloud processing techniques (ground filtering, point clustering, 3D shape generation), optimizing data for object detection algorithms within the autonomous driving stack.  
-* Successfully deployed a proof-of-concept iteration of the autonomous driving stack, showcasing the enhanced obstacle detection capabilities to company leadership (including the CTO), securing approval for continued research and development.
-* Collaborated effectively within an Agile development framework (daily scrums, GitHub version control) adhering to strict coding standards and participating in numerous code reviews to ensure seamless integration of the pipeline into the larger autonomous system.
-* Stack: Proprietary ROS 2 Autoware Universe, Python, C++, Docker, NVIDIA Drive ORIN
+* Developed a multi-LiDAR fusion pipeline in ROS 2, improving obstacle detection by over 40% and adding rear-view obstacle classification for enhanced vehicle safety during autonomous operations.
+* Implemented a robust point cloud processing system, including ground filtering and 3D shape generation, which increased the accuracy and reliability of object detection.
+* Successfully deployed the first proof-of-concept iteration of an autonomous driving stack to a research vehicle, which was presented to the CTO and approved for further research. 
+* Utilized an Agile framework and Git for version control, enabling seamless integration with other engineering teams and ensuring efficient code development and collaboration.
+* Stack: ROS 2, Autoware Universe, Python, C++, Docker, NVIDIA Drive ORIN
 
 **Lead Developer @ University of Wisconsin - Oshkosh**
 *Oshkosh, WI | September 2023 - December 2023*
 
-* Led the development of a recipe-sharing Android application using C# and .NET MAUI, resulting in a feature-rich application with robust search and filtering capabilities (dietary restrictions, ingredients, meal type, rating).
-* Designed and implemented the application's backend using C# and a PostgreSQL database, managing data storage and retrieval for user accounts and recipes.
-* Successfully managed project deadlines, meeting 90% of major milestones by prioritizing "Minimum Viable Product" functionality and effectively directing the development team. This shows efficient project management and prioritization skills.
-* Developed the front-end using XAML, providing a user-friendly interface for recipe creation, searching, and sharing.
+* Led the development of a recipe-sharing Android application using C# and .NET MAUI, achieving 90% adherence to major project deadlines by prioritizing Minimum Viable Product (MVP) functionality.
+* Created a user-friendly interface with robust search and filtering capabilities (dietary restrictions, ingredients, meal types, ratings), improving user experience and engagement.
+* Managed user stories and prioritized tasks in an Agile environment, enhancing team efficiency and project delivery within budget.
+* Developed and deployed a fully functional application with a PostgreSQL backend for secure data storage and management.
 * Stack: C#, .NET MAUI, XAML, PostgreSQL
 
 ***

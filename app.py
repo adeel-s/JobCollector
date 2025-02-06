@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+import os
+from flask import Flask, render_template, request, jsonify, send_file
 import sqlite3
 from db import db_service as db
 from services import material_generation_service as matGen
@@ -10,6 +11,16 @@ def index():
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
+
+@app.route('/download_resume')
+def downloadResume():
+    resumePath = os.path.join(app.root_path, 'documents', 'resume.pdf')
+    return send_file(resumePath, as_attachment=True)
+
+@app.route('/download_cover_letter')
+def downloadCoverLetter():
+    coverLetterPath = os.path.join(app.root_path, 'documents', 'cover_letter.pdf')
+    return send_file(coverLetterPath, as_attachment=True)
 
 @app.route("/generate_materials", methods=["POST"])
 def generateMaterials():

@@ -207,7 +207,11 @@ function updateJobListings(jobs) {
         </a>
         <div style="display: flex; align-items: center;">
             <h3>${job.company}</h3>
-            <button class="btn btn-primary ml-auto createMaterials" data-job-id="${job.l_id}">Create Resume</button>
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+                <a class="resumeDownload" style="display: none;" download>Resume</a>
+                <a class="coverLetterDownload" style="display: none;" download>Cover Letter</a>
+                <button class="btn btn-primary ml-auto createMaterials" data-job-id="${job.l_id}">Create Resume</button>
+            </div>
         </div>
         <span>
             <span class="badge badge-primary">${job.location}</span>
@@ -280,10 +284,21 @@ function attachCheckboxListeners() {
                         body: JSON.stringify({ jobDescription: jobDescription})
                     }).then(response => response.json())
                         .then(data => {
-                            if (!data.success) {
-                                console.error("Error generating materials:", data.error);
-                            } else {
-                                console.log("Materials generated successfully:", data);
+                                if (!data.success) {
+                                    console.error("Error generating materials:", data.error);
+                                } else {
+                                    const resumeURL = '/download_resume';
+                                    const coverLetterURL = '/download_cover_letter';
+
+                                    const container = this.parentElement;
+                                    const resumeDownload = container.querySelector(".resumeDownload");
+                                    const coverLetterDownload = container.querySelector(".coverLetterDownload");
+
+                                    resumeDownload.href = resumeURL;
+                                    coverLetterDownload.href = coverLetterURL;
+                                    resumeDownload.style.display = "block";
+                                    coverLetterDownload.style.display = "block";
+                                    console.log("Materials generated successfully:", data);
                             }
                         })
                         .catch(error => console.error("Request failed:", error));

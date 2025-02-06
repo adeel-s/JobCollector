@@ -18,6 +18,7 @@ def generate(description):
     resume = resTemplate.resume
     coverLetter = clTemplate.template
     resumeFilePath = "documents\\resume.md"
+    resumePDFPath = "documents\\resume.pdf"
     coverLetterFilePath = "documents\\cover_letter.md"
     coverLetterPDFPath = "documents\\cover_letter.pdf"
     # TODO: MOVE BULLET INSERTION INTO THE COVERLETTERGENERATOR FILE
@@ -55,6 +56,7 @@ def generate(description):
         with open(coverLetterFilePath, "w", encoding="utf-8") as file:
             file.write(coverLetter)
         convert.MDtoPDF(coverLetterFilePath, coverLetterPDFPath)
+        convert.MDtoPDF(resumeFilePath, resumePDFPath)
 
     except Exception as e:
         print(f"Failed with exception: {e}")
