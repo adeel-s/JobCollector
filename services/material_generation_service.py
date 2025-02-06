@@ -37,7 +37,7 @@ def generate(description):
         print("Writing to output file...")
 
         # Write resume to output file
-        with open(resumeFilePath, "w") as file:
+        with open(resumeFilePath, "w", encoding="utf-8") as file:
             file.write(resume)
 
         print("Done writing to output file")

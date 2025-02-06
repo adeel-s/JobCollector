@@ -1,5 +1,15 @@
 
-resume = '''
+from textwrap import dedent
+resume = dedent(r'''---
+header-includes:
+    - \usepackage{mathptmx}
+    - \usepackage{titlesec}
+    - \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{\thesection}{1em}{}
+mainfont: "Times New Roman"
+fontsize: 12pt
+papersize: letter
+geometry: margin=1in
+---
 # Adeel Sultan
 
 **Software Development Engineer**
@@ -40,4 +50,4 @@ www.linkedin.com/in/sultanadeel | www.github.com/adeel-s
 
 **Bachelor of Science in Computer Science with Honors**
 *University of Wisconsin - Oshkosh | 2020 - 2024 | GPA: 3.75 | Dean's List | Undergraduate Research Grant Recipient*
-'''
+''')
