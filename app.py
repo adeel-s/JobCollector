@@ -27,7 +27,8 @@ def generateMaterials():
     try:
         data = request.json
         jobDescription = data["jobDescription"]
-        matGen.generate(jobDescription)
+        jobCompany = data["jobCompany"]
+        matGen.generate(jobDescription, jobCompany)
         # TODO: Return materials somehow
         return jsonify({"success": True, "jobDescription": jobDescription})
 

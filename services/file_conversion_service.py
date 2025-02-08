@@ -8,7 +8,7 @@ def MDtoPDF(inputMD, outputPDF):
     :param output_pdf: Desired path for the output PDF file.
     """
     # Build the pandoc command
-    command = ["pandoc", inputMD, "-o", outputPDF]
+    command = ["pandoc", inputMD, "-o", outputPDF, "--pdf-engine=xelatex"]
 
     try:
         # Run the command and check for errors
@@ -16,4 +16,4 @@ def MDtoPDF(inputMD, outputPDF):
         print(f"Successfully converted '{inputMD}' to pdf")
     except subprocess.CalledProcessError as e:
         print("An error occurred during conversion:")
-        print(e)
+        print(e.output)

@@ -230,6 +230,7 @@ function updateJobListings(jobs) {
         let createButton = jobElement.querySelector(".createMaterials");
         if (createButton) {
             createButton.setAttribute("data-description", job.description);
+            createButton.setAttribute("data-company", job.company);
         }
     });
     attachCheckboxListeners();
@@ -277,11 +278,12 @@ function attachCheckboxListeners() {
             createButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     let jobDescription = this.getAttribute("data-description");
-                    console.log(jobDescription);
+                    let jobCompany = this.getAttribute("data-company");
+                    console.log(jobCompany);
                     fetch("/generate_materials", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ jobDescription: jobDescription})
+                        body: JSON.stringify({ jobDescription: jobDescription, jobCompany: jobCompany})
                     }).then(response => response.json())
                         .then(data => {
                                 if (!data.success) {

@@ -14,7 +14,7 @@ import services.file_conversion_service as convert
 
 
 
-def generate(description):
+def generate(description, company):
     resume = resTemplate.resume
     coverLetter = clTemplate.template
     resumeFilePath = "documents\\resume.md"
@@ -47,7 +47,7 @@ def generate(description):
         # Cover letter generation
         letter = letterGen.generate(description)
         date = datetime.now().strftime("%B %d, %Y").replace(" 0", " ")
-        placeholders = {"Date": date, "Company": "PLACEHOLDER COMPANY", "Letter": letter}
+        placeholders = {"Date": date, "Company": company, "Letter": letter}
 
         for attribute, value in placeholders.items():
             placeholder = f"!@#$Placeholder{attribute}"  # Construct the placeholder format
@@ -55,6 +55,8 @@ def generate(description):
 
         with open(coverLetterFilePath, "w", encoding="utf-8") as file:
             file.write(coverLetter)
+        print("Finished writing cover letter")
+        print("Converting files...")
         convert.MDtoPDF(coverLetterFilePath, coverLetterPDFPath)
         convert.MDtoPDF(resumeFilePath, resumePDFPath)
 

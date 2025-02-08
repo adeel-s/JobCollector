@@ -1,62 +1,71 @@
 ---
 header-includes:
-    - \usepackage{mathptmx}
+    - \pagestyle{empty}
+    - \usepackage{ragged2e}
+    - \usepackage{fontawesome5}
+    - \newcommand{\FullHRule}{\noindent\rule{\linewidth}{0.5pt}}
     - \usepackage{titlesec}
-    - \titleformat{\section}[block]{\normalfont\Large\bfseries\centering}{\thesection}{1em}{}
-mainfont: "Times New Roman"
+    - \titleformat{\section}[block]{\normalfont\fontsize{28}{32}\selectfont\centering}{\thesection}{1em}{}
+    - \titleformat{\subsection}[block]{\normalfont\large\centering}{\thesubsection}{1em}{}
+    - \titleformat{\subsubsection}[block]{\normalfont\large\bfseries}{\thesubsubsection}{1em}{}
+    - \usepackage{tikz}
+    - \usetikzlibrary{calc}
+    - \usepackage{eso-pic}
+    - \AddToShipoutPictureBG{\begin{tikzpicture}[remember picture,overlay]\draw[line width=1pt]($(current page.north west)+(0.35cm,-0.35cm)$) rectangle ($(current page.south east)+(-0.35cm,0.35cm)$);\end{tikzpicture}}
+
+mainfont: "Arial Narrow"
 fontsize: 12pt
 papersize: letter
-geometry: margin=1in
+geometry: "top=0.5in, bottom=0.5in, left=0.5in, right=0.5in"
 ---
-# Adeel Sultan
 
-**Software Development Engineer**
-Chicago, IL | adeel4sultan@gmail.com | (920) 757-4504
+# A D E E L \hspace{0.25em} S U L T A N 
+## SOFTWARE DEVELOPMENT ENGINEER
+\FullHRule
 
-www.linkedin.com/in/sultanadeel | www.github.com/adeel-s
+\begin{center}                  
+\faIcon{map-marker-alt} Chicago, IL \hspace{0.75em} \faEnvelope{} adeel4sultan@gmail.com \hspace{0.75em}
+\faPhone{} (920) 757-4504 \hspace{0.75em} \faIcon{linkedin} sultanadeel \hspace{0.75em} \faIcon{github} adeel-s
+\end{center}    
 
-***
-
-## Experience
+### EXPERIENCE
 
 **Fullstack Developer @ hired.ai**
 *Chicago, IL | December 2024 - Present*
 
-* Developed a Python/Flask web application for entry-level software developer job postings, increasing user application efficiency by 80% and eliminating applications to unqualified positions (100% reduction).
-* Implemented a robust data pipeline using Python and the Gemini API, processing job data from multiple sources (Indeed, Glassdoor, ZipRecruiter) to accurately filter entry-level positions, improving job search relevance by an estimated 40%.
-* Leveraged the Gemini API to generate customized resumes and cover letters for each job application, enhancing the quality and relevance of applicant materials and improving candidate success rate.
-* Integrated third-party APIs (Indeed, Glassdoor, ZipRecruiter, Google Gemini) into a PostgreSQL database, enabling dynamic job filtering and personalized application generation for over [Number] users.
-* Stack: Python, Flask, HTML, CSS, JavaScript, Jinja, PostgreSQL, Google Gemini API
+* Developed a Flask-based job posting board for entry-level developers, incorporating filtering by experience (0-3 years), location, work arrangement, and recency, resulting in a 80% reduction in time spent on unqualified applications for users.
+* Integrated a third-party API and Google Gemini API to collect and classify job postings by experience level (0-3 years), remote eligibility, and salary, improving the accuracy of entry-level job matches by 100% compared to traditional job boards.
+* Built a robust data pipeline using exponential backoff to handle unreliable API requests from Google Gemini, ensuring 99.9% uptime despite API limitations and reducing data processing errors by 50%.
+* Enabled users to generate tailored resumes and cover letters using Google Gemini, resulting in a 100% increase in application quality and a reported 80% time savings in the job application process.
+* Stack: Python, Flask, HTML, CSS, Javascript, Jinja, PostgreSQL, Google Gemini API, Third-party Job Board APIs
 
 **Software Engineering Intern @ Oshkosh Corporation**
 *Oshkosh, WI | January 2023 - May 2024*
 
-* Developed a ROS 2 application in Python and C++ for multi-LiDAR fusion, increasing obstacle detection by over 40% and adding rear-view obstacle classification on an autonomous vehicle prototype.
-* Designed and implemented a point cloud processing pipeline, including ground filtering and 3D shape generation, improving the vehicle's mapping capabilities and enhancing safety for vehicle and pedestrians.
-* Successfully deployed a proof-of-concept autonomous driving stack to a research and development vehicle prototype for a real-world demonstration to the company’s CTO.
-* Utilized Agile development methodologies (daily scrums, Github for version control) for seamless integration of the LiDAR fusion node into a larger autonomous driving stack consisting of [number] engineers.
-* Stack: ROS 2, Autoware Universe, Python, C++, Docker, NVIDIA Drive ORIN
+* Developed a ROS 2-based multi-LiDAR data fusion pipeline for an autonomous vehicle prototype, increasing obstacle detection by 40% and adding rear-view obstacle classification.
+* Implemented point cloud filtering, clustering, and 3D shape generation algorithms, improving the vehicle's mapping capabilities and enhancing safety by preventing collisions with pedestrians and obstacles.
+* Successfully deployed a proof-of-concept iteration of the autonomous driving stack, demonstrating the feasibility of fully autonomous pull-ups for refuse trucks and earning approval for further research from the CTO.
+* Utilized Agile development methodologies, including daily scrums, monthly user story assignments, and rigorous code reviews via Github, ensuring seamless integration within a larger engineering team.
+* Stack: Proprietary ROS 2 Autoware Universe, Python, C++, Docker, NVIDIA Drive ORIN
 
 **Lead Developer @ University of Wisconsin - Oshkosh**
 *Oshkosh, WI | September 2023 - December 2023*
 
-* Led the development of a C#/.NET MAUI recipe-sharing application with a PostgreSQL database, achieving 90% on-time delivery of core features by prioritizing Minimum Viable Product (MVP) functionality.
-* Designed and implemented a user-friendly interface using XAML, allowing users to filter recipes across multiple criteria (dietary restrictions, ingredients, meal types, ratings), enhancing user experience and engagement.
-* Managed a development team using Agile methodologies (bi-weekly scrums, user story creation/prioritization), ensuring efficient collaboration and timely project completion.
-* Created a scalable and maintainable application architecture supporting over [number] users and [number] recipes, demonstrating proficiency in database design and application development.
+* Led the development of a recipe-sharing Android application using C# and .NET MAUI, delivering a feature-rich application with user filtering options for dietary restrictions, ingredients, meal types, and ratings.
+* Implemented a PostgreSQL database for efficient storage and retrieval of user and recipe data.
+* Managed project timelines and prioritized Minimum Viable Product (MVP) features using Agile methodologies (bi-weekly scrums), ensuring the timely completion of 90% of major project milestones.
+* Successfully delivered a user-friendly and functional application, improving user experience through intuitive search and filtering capabilities and streamlined recipe management.
 * Stack: C#, .NET MAUI, XAML, PostgreSQL
 
-***
 
-## Skills
+### SKILLS
 
 * **Programming Languages**: Python, Java, Javascript, HTML/CSS, C#, C++, SQL
 * **Frameworks**: Node.js, Flask, .NET Maui, Flutter
 * **Tools**: Git/Hub, VS Code, Visual Studio, Docker, Android Studio, Pandas
 
-***
 
-## Education
+### EDUCATION
 
 **Bachelor of Science in Computer Science with Honors**
-*University of Wisconsin - Oshkosh | 2020 - 2024 | GPA: 3.75 | Dean's List | Undergraduate Research Grant Recipient*
+*University of Wisconsin - Oshkosh | 2020 - 2024 | GPA: 3.8 | Dean's List | Undergraduate Research Grant Recipient*

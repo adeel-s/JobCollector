@@ -18,7 +18,9 @@ def writeDFSupabase(df, table):
         supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
         print("Connected")
         data = df.to_dict(orient="records")
-        print("Writing to table %s ..." %table)
+        if not data:
+            return False
+        print("Writing to table %s..." %table)
         supabase.table(table).upsert(data, on_conflict=["l_id"], ignore_duplicates=True).execute()
         return True
     except Exception as e:
@@ -31,7 +33,7 @@ def writeDFSqlite(df, table):
     try:
         connection = sqlite3.connect(localDatabase)
         print("Connected")
-        print("Writing to table %s ..." %table)
+        print("Writing to table %s..." %table)
         df.to_sql(table, connection, if_exists="append", index=False)
         connection.commit()
         print("Done")
@@ -47,7 +49,7 @@ def getAllIDs():
         print("Connected")
         response = supabase.table(idsTable).select("*").execute()
     except Exception as e:
-        print("Supabase access failure: ", e)
+        print("Supabase read failure: ", e)
     return response.data
 
 def backupSupabase():
@@ -64,7 +66,7 @@ def getIDs(IDBatchSize):
         print("Connected")
         response = supabase.table(idsTable).select("l_id").eq("processed", False).limit(IDBatchSize).execute()
     except Exception as e:
-        print("Supabase access failure: ", e)
+        print("Supabase read failure: ", e)
     return response.data
 
 def updateJobIDs(jobs):

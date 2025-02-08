@@ -12,7 +12,9 @@
             <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
                 <a class="resumeDownload" style="display: none;" download>Resume</a>
                 <a class="coverLetterDownload" style="display: none;" download>Cover Letter</a>
-                <button class="btn btn-primary ml-auto createMaterials" data-description="{{ job['description'] }}">Create Resume</button>
+                <button class="btn btn-primary ml-auto createMaterials" 
+                data-description="{{ job['description'] }}"
+                data-company = "{{ job['company'] }}">Create Resume</button>
             </div>
         </div>
         <span>
@@ -45,11 +47,12 @@
             createButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     let jobDescription = this.getAttribute("data-description");
-                    console.log(jobDescription);
+                    let jobCompany = this.getAttribute("data-company");
+                    console.log(jobCompany);
                     fetch("/generate_materials", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ jobDescription: jobDescription})
+                        body: JSON.stringify({ jobDescription: jobDescription, jobCompany: jobCompany})
                     })
                     .then(response => response.json())
                     .then(data => {
