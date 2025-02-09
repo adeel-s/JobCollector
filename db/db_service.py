@@ -47,7 +47,7 @@ def getAllIDs():
     try:
         supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
         print("Connected")
-        response = supabase.table(idsTable).select("*").execute()
+        response = supabase.table(idsTable).select("*").range(0, 10000).execute()
     except Exception as e:
         print("Supabase read failure: ", e)
     return response.data

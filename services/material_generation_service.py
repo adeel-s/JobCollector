@@ -11,16 +11,26 @@ import services.file_conversion_service as convert
 
 # Generate bullets
 # description = desc.description
-
-
+resumeFilePath = "documents\\resume.md"
+resumePDFPath = "documents\\resume.pdf"
+coverLetterFilePath = "documents\\cover_letter.md"
+coverLetterPDFPath = "documents\\cover_letter.pdf"
+def writeCoverLetter(coverLetterText):
+    print("Updating cover letter markdown file...")
+    try:
+        with open(coverLetterFilePath, "w", encoding="utf-8") as file:
+            file.write(coverLetterText)
+        print("Done")
+        print("Converting cover letter file...")
+        convert.MDtoPDF(coverLetterFilePath, coverLetterPDFPath)
+        print("Done")
+    except Exception as e:
+        print(f"Failed with exception: {e}")
+        raise Exception("Cover letter generation failed")
 
 def generate(description, company):
     resume = resTemplate.resume
     coverLetter = clTemplate.template
-    resumeFilePath = "documents\\resume.md"
-    resumePDFPath = "documents\\resume.pdf"
-    coverLetterFilePath = "documents\\cover_letter.md"
-    coverLetterPDFPath = "documents\\cover_letter.pdf"
     # TODO: MOVE BULLET INSERTION INTO THE COVERLETTERGENERATOR FILE
     print("Inserting bullet points into resume...")
     try:
@@ -59,6 +69,7 @@ def generate(description, company):
         print("Converting files...")
         convert.MDtoPDF(coverLetterFilePath, coverLetterPDFPath)
         convert.MDtoPDF(resumeFilePath, resumePDFPath)
+        return [coverLetter, resume]
 
     except Exception as e:
         print(f"Failed with exception: {e}")

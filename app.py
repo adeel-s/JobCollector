@@ -12,6 +12,39 @@ def index():
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
 
+@app.route('/write')
+def write():
+    return render_template("write.html", jobs_length=0)
+
+@app.route('/generate_cover_letter', methods=["POST"])
+def generateCoverLetter():
+    try:
+        data = request.json
+        jobDescription = data["jobDescription"]
+        jobCompany = data["jobCompany"]
+        coverLetterText = matGen.generate(jobDescription, jobCompany)[0]
+        print(coverLetterText)
+        return jsonify({"success": True, "coverLetterText": coverLetterText})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
+@app.route('/export_cover_letter', methods=["POST"])
+def exportCoverLetter():
+    try:
+        data = request.json
+        coverLetterText = data["coverLetterText"]
+        matGen.writeCoverLetter(coverLetterText)
+        print(coverLetterText)
+        return jsonify({"success": True})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+    
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
 @app.route('/download_resume')
 def downloadResume():
     resumePath = os.path.join(app.root_path, 'documents', 'resume.pdf')
