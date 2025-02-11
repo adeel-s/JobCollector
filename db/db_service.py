@@ -223,7 +223,6 @@ def generateQuery(filters):
 
 def dbReporting():
     jobsDF = pd.DataFrame(selectFromJobs())
-    print("HERE")
     idsDF = pd.DataFrame(getAllIDs())
     numJobRecords = len(jobsDF)
     numIDRecords = len(idsDF)
@@ -245,3 +244,4 @@ def dbReporting():
                         END OF REPORT
         ---------------------------------------------
         """)
+    return numJobRecords, numIDRecords
