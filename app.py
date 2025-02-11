@@ -7,14 +7,14 @@ from services import material_generation_service as matGen
 
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.DEBUG)
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
+    logging.basicConfig(level=logging.INFO)
+    app.logger.setLevel(logging.INFO)
 
 @app.route('/')
 def index():
-    current_app.logger.info("Application home page loaded ######################################################################")
+    app.logger.info("Application home page loaded ######################################################################")
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
