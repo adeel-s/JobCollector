@@ -3,3 +3,5 @@ __pycache__/
 supabase_db_test.py
 db/init_db.py
 services/smtp_service.py
+db/__pycache__
+services/__pycache__
