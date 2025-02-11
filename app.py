@@ -1,4 +1,4 @@
-import os
+import os, logging
 from flask import Flask, render_template, request, jsonify, send_file
 import sqlite3
 from db import db_service as db
@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
 @app.route('/')
 def index():
-    print("Application started")
+    app.logger.info("Application started")
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
