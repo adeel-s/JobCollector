@@ -3,7 +3,6 @@ from supabase import create_client, Client
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from psycopg2 import pool, extras
 from psycopg2.sql import SQL, Identifier
-import app_secrets as sec
 from services import timestamp_service as ts
 
 sqliteSchemaFile = 'db\\sqlite_schema.sql'
@@ -11,11 +10,14 @@ supabaseSchemaFile = 'db\\supabase_schema.sql'
 localDatabase = 'db\\database.db'
 jobsTable = "jobs"
 idsTable = "job_ids"
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+SUPABASE_PASSWORD = os.environ.get("SUPABASE_PASSWORD")
 
 def writeDFSupabase(df, table):
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         data = df.to_dict(orient="records")
         if not data:
@@ -45,7 +47,7 @@ def writeDFSqlite(df, table):
 def getAllIDs():
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         response = supabase.table(idsTable).select("*").range(0, 10000).execute()
     except Exception as e:
@@ -62,7 +64,7 @@ def backupSupabase():
 def getIDs(IDBatchSize):
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         response = supabase.table(idsTable).select("l_id").eq("processed", False).limit(IDBatchSize).execute()
     except Exception as e:
@@ -72,7 +74,7 @@ def getIDs(IDBatchSize):
 def updateJobIDs(jobs):
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         
         print("Marking job ids as processed")
@@ -86,7 +88,7 @@ def updateJobIDs(jobs):
 def resetJobIDs():
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         
         print("Marking job ids as processed")
@@ -99,7 +101,7 @@ def resetJobIDs():
 def updateJobStatus(id, status, checked):
     print("Connecting to Supabase...")
     try:
-        supabase: Client = create_client(sec.SUPABASE_URL, sec.SUPABASE_KEY)
+        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         
         existing_data = supabase.table(jobsTable).select(status).eq("l_id", id).execute()
@@ -119,7 +121,7 @@ def selectFromJobs(jobFilter=None):
             maxconn=10,
             minconn=1,
             user="postgres.wcqruutxfjomblzltiyo",
-            password=sec.SUPABASE_PASSWORD,
+            password=SUPABASE_PASSWORD,
             host="aws-0-us-east-2.pooler.supabase.com",
             port=6543,
             dbname="postgres",

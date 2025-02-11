@@ -1,11 +1,9 @@
-import json
-import re
 import google.generativeai as genai
-import app_secrets as sec
 import llm_prompts as prompts
 from documents import experience as exp
+import os
 
-apiKey = sec.GEMINI_API_KEY
+apiKey = os.environ.get("GEMINI_API_KEY")
 experience = exp.experience
 
 

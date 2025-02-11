@@ -15,6 +15,7 @@ debuggingCSV = "debugging_csv\\new_processed_jobs.csv"
 debuggingCSV1 = "debugging_csv\\new_scraped_jobs.csv"
 jobsTableName = "jobs"
 geminiDelay = 61
+blacklist = set({"Outlier", "SynergisticIT", "Team Remotely", "Joinrs US", "Epic", "Revature"})
 
 def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
     jobs = []
@@ -32,7 +33,11 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
         job={}
         job["l_id"]=idBatch[i]
         try:
-            job["company"]=soup.find("div",{"class":"top-card-layout__card"}).find("a").find("img").get('alt')
+            company = soup.find("div",{"class":"top-card-layout__card"}).find("a").find("img").get('alt')
+            if company in blacklist:
+                print(f"Skipped blacklisted: {company}")
+            #     continue
+            job["company"]=company
         except:
             job["company"]="No company provided"
         # Get position title

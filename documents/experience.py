@@ -52,9 +52,17 @@ Experience 3. Recipe sharing Android application in C#/.NET Maui
 
 I developed a feature-rich recipe documenting and sharing application in C# and .NET Maui.
 The application allows users to record their favorite recipes and filter public recipies and numerous search criteria including dietary restrictions, ingredients, meal types, and ratings.
-The front end of the application was written in XAML, with a C# backend in a .NET environment. 
+The front end of the application was written in XAML, with a C# backend in a .NET environment. We used a tiered architecture of UI, Logic, and Database layers. We also used a Model View View-Model (MVVM) design pattern for development.
 We used a PostgreSQL-based cloud hosted database to store user and recipe data.
 We developed the app using the Agile methodology, with bi-weekly scrums.
 I in particular took a leadership role in the group, creating user stories and prioritizing them based on core functionalities and future development.
 I was able to ensure we met 90% of the major project deadlines by directing developers to focus on "Minimum Viable Product" functionality before adding additional features.
+
+Experience 4.
+
+I co-developed an AI turing-test web application experience that testing users' ability to detect AI-generated responses to questions.
+We created a RESTful API to process user requests and also used third-party APIs for user authentication.
+We used the OpenAI API to send requests to ChatGPT to generate responses to pre-written questions.
+
+We used an HTML/CSS and Javascript front end, node.js backend, PostgreSQL (CockroachDB) database.
 '''

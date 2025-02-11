@@ -6,8 +6,12 @@ from services import material_generation_service as matGen
 
 app = Flask(__name__)
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
+
 @app.route('/')
 def index():
+    print("Application started")
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))

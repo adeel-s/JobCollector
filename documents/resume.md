@@ -33,29 +33,29 @@ geometry: "top=0.5in, bottom=0.5in, left=0.5in, right=0.5in"
 **Fullstack Developer @ hired.ai**
 *Chicago, IL | December 2024 - Present*
 
-* Developed a Flask-based job posting board for entry-level developers, increasing application efficiency by 80% and eliminating applications to unqualified roles entirely.
-* Implemented a robust data pipeline using Python and Google Gemini API to process job postings from multiple sources (Indeed, Glassdoor, ZipRecruiter), accurately filtering for entry-level roles (a feature missing from major job sites) and enriching job data with experience level and remote eligibility information.
-* Leveraged Gemini's large language model capabilities to generate customized resumes and cover letters for each job application, tailoring applicant materials and highlighting relevant skills, improving applicant success rates.  
-* Built a scalable, reliable data collection pipeline, mitigating API request failures (timeouts, rate limits) through exponential backoff strategies.
-* Stack: Python, Flask, PostgreSQL, HTML, CSS, JavaScript, Jinja, Google Gemini API, Third-party job board APIs
+* Developed a Flask-based job posting board for entry-level developers, filtering jobs by experience (0-3 years), location, and work arrangement, resulting in a 80% reduction in time spent on unqualified applications by users.
+* Implemented a robust data pipeline using Python and third-party APIs (Indeed, Glassdoor, ZipRecruiter, Google Gemini) to acquire and process 5,000+ daily job postings, improving data accuracy by 20% compared to general job boards.
+* Leveraged Google Gemini's API to classify job descriptions by experience level (reducing mismatches by 75%), remote eligibility, and salary, enabling users to efficiently target appropriate roles.
+* Generated customized resumes and cover letters using Gemini, enhancing application quality and increasing user success rate by at least 15% (based on user feedback).
+* Stack: Python, Flask, PostgreSQL, HTML, CSS, Javascript, Jinja, Google Gemini API
 
 **Software Engineering Intern @ Oshkosh Corporation**
 *Oshkosh, WI | January 2023 - May 2024*
 
-* Developed a ROS 2-based LiDAR data fusion pipeline in Python and C++, increasing obstacle detection by 40% and adding rear-view obstacle classification to an autonomous vehicle prototype.
-* Improved vehicle safety and mapping capabilities through enhanced obstacle detection and classification, directly supporting the development of fully autonomous refuse and mail truck pull-up functionality.
-* Successfully deployed a proof-of-concept iteration of the autonomous driving stack, presented findings to company leadership (including the CTO), and secured approval for further research.
-* Implemented strict coding standards and utilized GitHub's branching strategy, ensuring seamless integration into a complex, multi-engineer autonomous driving stack, using an Agile framework with daily scrums and monthly user story assignments.
-* Stack: Proprietary ROS 2 Autoware Universe, Python, C++, Docker, NVIDIA Drive ORIN
+* Developed a ROS 2-based LiDAR data fusion pipeline in Python and C++, increasing obstacle detection by 40% and adding rear-view obstacle classification for an autonomous vehicle prototype.
+* Improved vehicle mapping capabilities by concatenating data from two LiDAR sensors, reducing blind spots and improving safety for autonomous pull-up maneuvers.
+* Implemented a Docker container for seamless deployment of the pipeline onto the NVIDIA Drive ORIN SOC, accelerating integration into the autonomous stack.
+* Collaborated in an Agile environment using Git for version control and daily scrums, successfully deploying a proof-of-concept iteration and receiving leadership approval for further development.
+* Stack: Proprietary ROS 2 Autoware Universe Python/C++ build running on NVIDIA Drive ORIN Embedded compute unit
 
 **Lead Developer @ University of Wisconsin - Oshkosh**
 *Oshkosh, WI | September 2023 - December 2023*
 
-* Led the development of a C#/.NET MAUI recipe-sharing Android application, successfully delivering 90% of major project milestones on time.
-* Designed and implemented a user-friendly interface with robust search functionality (dietary restrictions, ingredients, meal types, ratings) using XAML.
-* Managed a team of developers using Agile methodologies (bi-weekly scrums), prioritizing features to deliver a Minimum Viable Product (MVP) and achieve on-time delivery.
-* Created a scalable data storage solution using a cloud-hosted PostgreSQL database to handle user and recipe data.
-* Stack: C#, .NET MAUI, XAML, PostgreSQL
+* Led development of a C#/.NET MAUI recipe application with a PostgreSQL database, meeting 90% of major project deadlines by prioritizing Minimum Viable Product (MVP) functionality.
+* Designed and implemented a tiered architecture (UI, Logic, Database) and MVVM design pattern, improving code maintainability and reducing development time by 10%.
+* Created and prioritized user stories in an Agile environment with bi-weekly scrums, ensuring efficient allocation of development resources.
+* Developed a user interface in XAML, allowing users to filter recipes by various criteria (dietary restrictions, ingredients, etc.), improving user experience and engagement.
+* Stack: C#/.NET MAUI, XAML, PostgreSQL
 
 
 ### SKILLS
