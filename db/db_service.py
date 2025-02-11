@@ -4,15 +4,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from psycopg2 import pool, extras
 from psycopg2.sql import SQL, Identifier
 from services import timestamp_service as ts
+import app_secrets as secrets
 
 sqliteSchemaFile = 'db\\sqlite_schema.sql'
 supabaseSchemaFile = 'db\\supabase_schema.sql'
 localDatabase = 'db\\database.db'
 jobsTable = "jobs"
 idsTable = "job_ids"
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-SUPABASE_PASSWORD = os.environ.get("SUPABASE_PASSWORD")
+SUPABASE_URL = secrets.SUPABASE_URL
+SUPABASE_KEY = secrets.SUPABASE_KEY
+SUPABASE_PASSWORD = secrets.SUPABASE_PASSWORD
 
 def writeDFSupabase(df, table):
     print("Connecting to Supabase...")
@@ -71,15 +72,15 @@ def getIDs(IDBatchSize):
         print("Supabase read failure: ", e)
     return response.data
 
-def updateJobIDs(jobs):
+def updateJobIDs(l_ids):
     print("Connecting to Supabase...")
     try:
         supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
         print("Connected")
         
         print("Marking job ids as processed")
-        for i, row in jobs.iterrows():
-            response = (supabase.table(idsTable).update({"processed": True}).eq("l_id", row["l_id"]).execute())
+        for id in l_ids:
+            response = (supabase.table(idsTable).update({"processed": True}).eq("l_id", id).execute())
         return True
     except Exception as e:
         print("Supabase update failure: ", e)
@@ -222,6 +223,7 @@ def generateQuery(filters):
 
 def dbReporting():
     jobsDF = pd.DataFrame(selectFromJobs())
+    print("HERE")
     idsDF = pd.DataFrame(getAllIDs())
     numJobRecords = len(jobsDF)
     numIDRecords = len(idsDF)

@@ -21,7 +21,7 @@ connection = sqlite3.connect(localDatabase)
 
 # Back up tables to Supabase backups
 
-raise Exception("ENSURE BACKUP TABLES EXIST WITH NAMES: jobs_backup and job_ids_backup. ALSO CONSIDER EXPORTING CSV FILES")
+raise Exception("ENSURE BACKUP TABLES EXIST WITH NAMES: jobs_backup and job_ids_backup. ALSO CONSIDER EXPORTING CSV FILES FROM SUPABASE")
 
 
 jobs = pd.DataFrame(db.selectFromJobs())

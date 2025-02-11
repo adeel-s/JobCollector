@@ -19,6 +19,7 @@ blacklist = set({"Outlier", "SynergisticIT", "Team Remotely", "Joinrs US", "Epic
 
 def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
     jobs = []
+    skippedIDs = []
     target_url='https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{}'
     for i in range(len(idBatch)):
         # Delay on reaching the request limit
@@ -36,7 +37,8 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
             company = soup.find("div",{"class":"top-card-layout__card"}).find("a").find("img").get('alt')
             if company in blacklist:
                 print(f"Skipped blacklisted: {company}")
-            #     continue
+                skippedIDs.append(idBatch[i])
+                continue
             job["company"]=company
         except:
             job["company"]="No company provided"
@@ -81,6 +83,8 @@ def getJobDetails(idBatch, LIRequestLimit, LIRequestDelay):
     print("Finished collecting job details")
     #TODO: Make sure no data loss or bad format here
     jobs = pd.DataFrame(jobs)
+    if skippedIDs:
+        db.updateJobIDs(skippedIDs)
     jobs.to_csv(debuggingCSV1, index=False, encoding='utf-8')
     return jobs
 
@@ -127,7 +131,7 @@ def processJobDescriptions(jobs, gemeniRequestLimit):
                 except TypeError:
                     print(f"Non-serializable value found in column '{column}' at index {index}: {value} ({type(value)})")
         if db.writeDFSupabase(jobs, jobsTableName):
-            db.updateJobIDs(jobs)
+            db.updateJobIDs(jobs["l_id"].tolist())
         jobs.to_csv(debuggingCSV, index=False, encoding='utf-8')
     return jobs
 

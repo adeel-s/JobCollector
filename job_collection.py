@@ -21,7 +21,6 @@ gemeniRequestLimit = 13
 LIRequestLimit = 15
 IDBatchSize = 27
 
-print("JOB DESCRIPTION PROCESSING WAS RECENTLY CHANGED \n\n LOOK OUT FOR DATABASE/PROCESSING ERRORS IN NEW JOBS")
 db.dbReporting()
 # Collect new job IDs from LinkedIn
 for url in searchURLs:

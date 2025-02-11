@@ -1,8 +1,9 @@
 import os
 import google.generativeai as genai
 import llm_prompts as prompts
+import app_secrets as secrets
 
-apiKey = os.environ.get("GEMINI_API_KEY")
+apiKey = secrets.GEMINI_API_KEY
 
 
 description = ""
