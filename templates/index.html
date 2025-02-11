@@ -77,15 +77,12 @@
             });
             
             document.querySelectorAll(".status-checkbox").forEach(checkbox => {
-                console.log("Attaching event listener to:", checkbox);
                 
                 checkbox.addEventListener("change", function() {
                     let jobId = this.getAttribute("data-job-id");
                     let status = this.getAttribute("data-status");
                     let checked = this.checked;
-    
-                    console.log(`Checkbox changed: jobId=${jobId}, status=${status}, checked=${checked}`);
-    
+        
                     fetch("/update_status", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
