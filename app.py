@@ -9,11 +9,13 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000,
+                    format='%(asctime)s %(levelname)s: %(message)s',
+                    handlers=[logging.StreamHandler()])
 
 @app.route('/')
 def index():
-    app.logger.info("Application started")
+    app.logger.info("Application home page loaded")
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
