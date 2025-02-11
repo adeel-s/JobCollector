@@ -8,9 +8,16 @@ from services import material_generation_service as matGen
 app = Flask(__name__)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000)
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+    ],
+    )
     app.logger.setLevel(logging.INFO)
+    app.run(host="0.0.0.0", port=8000)
+    
 
 @app.route('/')
 def index():
