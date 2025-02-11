@@ -1,12 +1,13 @@
 import os, logging
-from flask import Flask, render_template, request, jsonify, send_file
+import sys
+from flask import Flask, current_app, render_template, request, jsonify, send_file
 import sqlite3
 from db import db_service as db
 from services import material_generation_service as matGen
 
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000,
@@ -15,7 +16,7 @@ if __name__ == "__main__":
 
 @app.route('/')
 def index():
-    app.logger.info("Application home page loaded")
+    current_app.logger.info("Application home page loaded ######################################################################")
     jobFilter = {"status":[], "posted": ["Most recent"]}
     jobs = db.selectFromJobs(jobFilter)
     return render_template("index.html", jobs=jobs, jobs_length=len(jobs))
