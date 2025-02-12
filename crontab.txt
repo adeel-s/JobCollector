@@ -1,0 +1,2 @@
+0 8 * * * /home/pi0/Projects/JobCollector/venv/bin/python /home/pi0/Projects/JobCollector/job_collection.py >> /home/pi0/script.log 2>&1
+50 18 * * * /home/pi0/Projects/JobCollector/venv/bin/python /home/pi0/Projects/JobCollector/job_collection.py >> /home/pi0/script.log 2>&1
